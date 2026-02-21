@@ -1,7 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { detectPotsholesVideo } from '@/services/operations/demoAPI'
+
+const PotholeAlertMap = dynamic(() => import('@/components/PotholeAlertMap'), { ssr: false })
 
 export default function VideoDetectionPage() {
     const [file, setFile] = useState(null)
@@ -11,6 +14,33 @@ export default function VideoDetectionPage() {
     const [result, setResult] = useState(null)
     const [dragActive, setDragActive] = useState(false)
     const [expandedFrame, setExpandedFrame] = useState(null)
+    const [reports, setReports] = useState([])
+    const [userLocation, setUserLocation] = useState(null)
+
+    useEffect(() => {
+        fetchPotholes()
+        requestLocation()
+    }, [])
+
+    const fetchPotholes = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/reports')
+            if (!response.ok) throw new Error('Failed to fetch reports')
+            const pothelesData = await response.json()
+            setReports(pothelesData)
+        } catch (err) {
+            console.error('Error fetching potholes:', err)
+        }
+    }
+
+    const requestLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => setUserLocation({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+                () => console.log('Location access denied')
+            )
+        }
+    }
 
     // Handle file selection
     const handleFileChange = (e) => {
@@ -126,6 +156,14 @@ export default function VideoDetectionPage() {
                     <p className="text-xl text-gray-400">
                         Upload a video to detect and analyze potholes frame by frame using AI
                     </p>
+                </div>
+
+                {/* Live Pothole Map */}
+                <div className="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+                    <h2 className="text-2xl font-semibold text-white mb-4">🗺️ Live Pothole Map</h2>
+                    <div style={{ height: '400px', borderRadius: '8px', overflow: 'hidden' }}>
+                        <PotholeAlertMap reports={reports} userLocation={userLocation} alertRadius={1000} />
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

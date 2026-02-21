@@ -79,6 +79,9 @@ function Hero() {
           <a href="/volunteer" className="btn-primary">
             <span className="btn-icon">📤</span> Upload Image / Video
           </a>
+          <a href="/navigate" className="btn-secondary" style={{ textDecoration: 'none' }}>
+            <span className="btn-icon">🗺️</span> Navigate with Alerts
+          </a>
           <button className="btn-secondary" onClick={() => scrollTo('solution')}>
             <span className="btn-icon">⬡</span> Explore Solution
           </button>

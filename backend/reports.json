@@ -5008,5 +5008,1824 @@
         "severity": "Moderate"
       }
     ]
+  },
+  {
+    "id": "1771599309852_ba338179",
+    "timestamp": 1771599309,
+    "original_file": "reports\\1771599309852_ba338179_orig_pot.jpg",
+    "annotated_file": "reports\\1771599309852_ba338179_annot.png",
+    "lat": 25.2542175,
+    "lon": 87.043836,
+    "description": "g",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771611496241_28166a76",
+    "timestamp": 1771611496,
+    "original_file": "reports\\1771611496241_28166a76_orig_pot.jpg",
+    "annotated_file": "reports\\1771611496241_28166a76_annot.png",
+    "lat": 25.254266560729615,
+    "lon": 87.04385568304721,
+    "description": "ugyu",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771626141328_446a5aca",
+    "timestamp": 1771626141,
+    "original_file": "reports\\1771626141328_446a5aca_orig_pot.jpg",
+    "annotated_file": "reports\\1771626141328_446a5aca_annot.png",
+    "lat": 25.609,
+    "lon": 85.1343,
+    "description": "bb",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771630086535_cccf282a",
+    "timestamp": 1771630086,
+    "original_file": "reports/1771630086535_cccf282a_orig_pot.jpg",
+    "annotated_file": "reports/1771630086535_cccf282a_annot.png",
+    "lat": 25.2542175,
+    "lon": 87.043836,
+    "description": "",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771633072595_aedbc4cb",
+    "timestamp": 1771633072,
+    "original_file": "reports/1771633072595_aedbc4cb_orig_pot.jpg",
+    "annotated_file": "reports/1771633072595_aedbc4cb_annot.png",
+    "lat": 25.609,
+    "lon": 85.1343,
+    "description": "",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771633580964_49cf3553",
+    "timestamp": 1771633580,
+    "original_file": "reports/1771633580964_49cf3553_orig_pot.jpg",
+    "annotated_file": "reports/1771633580964_49cf3553_annot.png",
+    "lat": 25.609,
+    "lon": 85.1343,
+    "description": "",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771634634672_0d082820",
+    "timestamp": 1771634634,
+    "original_file": "reports/1771634634672_0d082820_orig_pot.jpg",
+    "annotated_file": "reports/1771634634672_0d082820_annot.png",
+    "lat": 25.25423989234293,
+    "lon": 87.04386406329125,
+    "description": "",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771643358305_8a63c169",
+    "timestamp": 1771643358,
+    "original_file": "reports/1771643358305_8a63c169_orig_smaple.mp4",
+    "annotated_file": "reports/1771643358305_8a63c169_annot.png",
+    "lat": 25.609,
+    "lon": 85.1343,
+    "description": "",
+    "total_detections": 146,
+    "severity_breakdown": {
+      "Minor": 71,
+      "Moderate": 71,
+      "Major": 4
+    },
+    "detections": [
+      {
+        "bbox": [
+          41,
+          387,
+          146,
+          474
+        ],
+        "confidence": 0.762,
+        "area": 9135,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          226,
+          304,
+          307,
+          386
+        ],
+        "confidence": 0.749,
+        "area": 6642,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          342,
+          241,
+          392,
+          289
+        ],
+        "confidence": 0.751,
+        "area": 2400,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          215,
+          158,
+          254,
+          197
+        ],
+        "confidence": 0.424,
+        "area": 1521,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          382,
+          299,
+          492,
+          419
+        ],
+        "confidence": 0.446,
+        "area": 13200,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          322,
+          193,
+          381,
+          244
+        ],
+        "confidence": 0.337,
+        "area": 3009,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          234,
+          241,
+          299,
+          305
+        ],
+        "confidence": 0.818,
+        "area": 4160,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          255,
+          260,
+          301,
+          306
+        ],
+        "confidence": 0.252,
+        "area": 2116,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          319,
+          156,
+          359,
+          196
+        ],
+        "confidence": 0.29,
+        "area": 1600,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          114,
+          261,
+          166,
+          318
+        ],
+        "confidence": 0.658,
+        "area": 2964,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          89,
+          426,
+          227,
+          480
+        ],
+        "confidence": 0.808,
+        "area": 7452,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          53,
+          365,
+          153,
+          449
+        ],
+        "confidence": 0.752,
+        "area": 8400,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          353,
+          284,
+          461,
+          400
+        ],
+        "confidence": 0.582,
+        "area": 12528,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          202,
+          440,
+          303,
+          479
+        ],
+        "confidence": 0.769,
+        "area": 3939,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          329,
+          230,
+          381,
+          279
+        ],
+        "confidence": 0.762,
+        "area": 2548,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          305,
+          433,
+          467,
+          480
+        ],
+        "confidence": 0.554,
+        "area": 7614,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          64,
+          340,
+          160,
+          428
+        ],
+        "confidence": 0.715,
+        "area": 8448,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          225,
+          421,
+          289,
+          479
+        ],
+        "confidence": 0.832,
+        "area": 3712,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          214,
+          230,
+          293,
+          292
+        ],
+        "confidence": 0.519,
+        "area": 4898,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          290,
+          414,
+          413,
+          479
+        ],
+        "confidence": 0.758,
+        "area": 7995,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          123,
+          248,
+          173,
+          306
+        ],
+        "confidence": 0.507,
+        "area": 2900,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          100,
+          381,
+          220,
+          479
+        ],
+        "confidence": 0.772,
+        "area": 11760,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          76,
+          313,
+          168,
+          403
+        ],
+        "confidence": 0.602,
+        "area": 8280,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          318,
+          272,
+          438,
+          368
+        ],
+        "confidence": 0.712,
+        "area": 11520,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          415,
+          407,
+          500,
+          479
+        ],
+        "confidence": 0.533,
+        "area": 6120,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          116,
+          360,
+          225,
+          450
+        ],
+        "confidence": 0.855,
+        "area": 9810,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          310,
+          184,
+          369,
+          232
+        ],
+        "confidence": 0.475,
+        "area": 2832,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          292,
+          383,
+          494,
+          479
+        ],
+        "confidence": 0.836,
+        "area": 19392,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          227,
+          386,
+          290,
+          456
+        ],
+        "confidence": 0.567,
+        "area": 4410,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          281,
+          378,
+          385,
+          480
+        ],
+        "confidence": 0.797,
+        "area": 10608,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          318,
+          215,
+          375,
+          266
+        ],
+        "confidence": 0.265,
+        "area": 2907,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          132,
+          232,
+          181,
+          295
+        ],
+        "confidence": 0.708,
+        "area": 3087,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          126,
+          344,
+          224,
+          418
+        ],
+        "confidence": 0.827,
+        "area": 7252,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          227,
+          367,
+          289,
+          429
+        ],
+        "confidence": 0.407,
+        "area": 3844,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          115,
+          413,
+          195,
+          479
+        ],
+        "confidence": 0.879,
+        "area": 5280,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          95,
+          302,
+          176,
+          378
+        ],
+        "confidence": 0.674,
+        "area": 6156,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          336,
+          407,
+          551,
+          480
+        ],
+        "confidence": 0.573,
+        "area": 15695,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          311,
+          150,
+          345,
+          187
+        ],
+        "confidence": 0.563,
+        "area": 1258,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          273,
+          344,
+          345,
+          478
+        ],
+        "confidence": 0.796,
+        "area": 9648,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          211,
+          213,
+          285,
+          271
+        ],
+        "confidence": 0.79,
+        "area": 4292,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          226,
+          343,
+          281,
+          398
+        ],
+        "confidence": 0.294,
+        "area": 3025,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          103,
+          280,
+          177,
+          351
+        ],
+        "confidence": 0.681,
+        "area": 5254,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          60,
+          406,
+          176,
+          479
+        ],
+        "confidence": 0.563,
+        "area": 8468,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          136,
+          218,
+          180,
+          273
+        ],
+        "confidence": 0.704,
+        "area": 2420,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          264,
+          332,
+          334,
+          434
+        ],
+        "confidence": 0.75,
+        "area": 7140,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          75,
+          351,
+          191,
+          475
+        ],
+        "confidence": 0.603,
+        "area": 14384,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          106,
+          263,
+          202,
+          338
+        ],
+        "confidence": 0.416,
+        "area": 7200,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          219,
+          201,
+          276,
+          255
+        ],
+        "confidence": 0.746,
+        "area": 3078,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          322,
+          322,
+          482,
+          472
+        ],
+        "confidence": 0.779,
+        "area": 24000,
+        "severity": "Major"
+      },
+      {
+        "bbox": [
+          131,
+          210,
+          172,
+          258
+        ],
+        "confidence": 0.589,
+        "area": 1968,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          183,
+          199,
+          273,
+          288
+        ],
+        "confidence": 0.766,
+        "area": 8010,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          127,
+          327,
+          198,
+          401
+        ],
+        "confidence": 0.485,
+        "area": 5254,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          288,
+          142,
+          321,
+          178
+        ],
+        "confidence": 0.558,
+        "area": 1188,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          0,
+          423,
+          94,
+          480
+        ],
+        "confidence": 0.718,
+        "area": 5358,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          288,
+          304,
+          456,
+          431
+        ],
+        "confidence": 0.801,
+        "area": 21336,
+        "severity": "Major"
+      },
+      {
+        "bbox": [
+          120,
+          204,
+          161,
+          255
+        ],
+        "confidence": 0.685,
+        "area": 2091,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          272,
+          140,
+          308,
+          177
+        ],
+        "confidence": 0.535,
+        "area": 1332,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          97,
+          253,
+          158,
+          301
+        ],
+        "confidence": 0.455,
+        "area": 2928,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          184,
+          192,
+          245,
+          266
+        ],
+        "confidence": 0.457,
+        "area": 4514,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          109,
+          199,
+          149,
+          247
+        ],
+        "confidence": 0.67,
+        "area": 1920,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          270,
+          276,
+          413,
+          402
+        ],
+        "confidence": 0.816,
+        "area": 18018,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          262,
+          141,
+          294,
+          178
+        ],
+        "confidence": 0.451,
+        "area": 1184,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          0,
+          378,
+          108,
+          479
+        ],
+        "confidence": 0.768,
+        "area": 10908,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          101,
+          196,
+          139,
+          238
+        ],
+        "confidence": 0.544,
+        "area": 1596,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          85,
+          238,
+          140,
+          286
+        ],
+        "confidence": 0.437,
+        "area": 2640,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          173,
+          183,
+          228,
+          257
+        ],
+        "confidence": 0.531,
+        "area": 4070,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          247,
+          141,
+          279,
+          176
+        ],
+        "confidence": 0.385,
+        "area": 1120,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          61,
+          284,
+          161,
+          370
+        ],
+        "confidence": 0.42,
+        "area": 8600,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          255,
+          268,
+          367,
+          376
+        ],
+        "confidence": 0.615,
+        "area": 12096,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          89,
+          192,
+          126,
+          231
+        ],
+        "confidence": 0.274,
+        "area": 1443,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          229,
+          140,
+          263,
+          175
+        ],
+        "confidence": 0.36,
+        "area": 1190,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          153,
+          181,
+          209,
+          252
+        ],
+        "confidence": 0.51,
+        "area": 3976,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          202,
+          255,
+          355,
+          361
+        ],
+        "confidence": 0.795,
+        "area": 16218,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          0,
+          320,
+          128,
+          470
+        ],
+        "confidence": 0.796,
+        "area": 19200,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          21,
+          277,
+          61,
+          326
+        ],
+        "confidence": 0.26,
+        "area": 1960,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          72,
+          224,
+          122,
+          271
+        ],
+        "confidence": 0.457,
+        "area": 2350,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          213,
+          139,
+          250,
+          172
+        ],
+        "confidence": 0.471,
+        "area": 1221,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          63,
+          243,
+          151,
+          335
+        ],
+        "confidence": 0.878,
+        "area": 8096,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          139,
+          177,
+          191,
+          244
+        ],
+        "confidence": 0.598,
+        "area": 3484,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          191,
+          240,
+          310,
+          320
+        ],
+        "confidence": 0.791,
+        "area": 9520,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          198,
+          134,
+          232,
+          169
+        ],
+        "confidence": 0.533,
+        "area": 1190,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          1,
+          288,
+          125,
+          408
+        ],
+        "confidence": 0.813,
+        "area": 14880,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          171,
+          401,
+          399,
+          480
+        ],
+        "confidence": 0.578,
+        "area": 18012,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          124,
+          171,
+          179,
+          235
+        ],
+        "confidence": 0.519,
+        "area": 3520,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          66,
+          209,
+          139,
+          279
+        ],
+        "confidence": 0.544,
+        "area": 5110,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          26,
+          266,
+          121,
+          374
+        ],
+        "confidence": 0.843,
+        "area": 10260,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          241,
+          348,
+          366,
+          451
+        ],
+        "confidence": 0.758,
+        "area": 12875,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          62,
+          333,
+          245,
+          448
+        ],
+        "confidence": 0.623,
+        "area": 21045,
+        "severity": "Major"
+      },
+      {
+        "bbox": [
+          99,
+          207,
+          152,
+          271
+        ],
+        "confidence": 0.636,
+        "area": 3392,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          78,
+          299,
+          203,
+          429
+        ],
+        "confidence": 0.296,
+        "area": 16250,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          126,
+          384,
+          195,
+          463
+        ],
+        "confidence": 0.539,
+        "area": 5451,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          197,
+          298,
+          347,
+          406
+        ],
+        "confidence": 0.29,
+        "area": 16200,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          235,
+          277,
+          329,
+          370
+        ],
+        "confidence": 0.782,
+        "area": 8742,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          30,
+          339,
+          124,
+          435
+        ],
+        "confidence": 0.546,
+        "area": 9024,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          46,
+          320,
+          134,
+          409
+        ],
+        "confidence": 0.252,
+        "area": 7832,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          77,
+          227,
+          159,
+          302
+        ],
+        "confidence": 0.725,
+        "area": 6150,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          224,
+          259,
+          316,
+          342
+        ],
+        "confidence": 0.693,
+        "area": 7636,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          123,
+          193,
+          169,
+          242
+        ],
+        "confidence": 0.486,
+        "area": 2254,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          207,
+          411,
+          324,
+          479
+        ],
+        "confidence": 0.481,
+        "area": 7956,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          195,
+          137,
+          239,
+          185
+        ],
+        "confidence": 0.53,
+        "area": 2112,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          121,
+          370,
+          340,
+          480
+        ],
+        "confidence": 0.614,
+        "area": 24090,
+        "severity": "Major"
+      },
+      {
+        "bbox": [
+          97,
+          217,
+          182,
+          289
+        ],
+        "confidence": 0.376,
+        "area": 6120,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          261,
+          240,
+          320,
+          310
+        ],
+        "confidence": 0.658,
+        "area": 4130,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          214,
+          347,
+          301,
+          444
+        ],
+        "confidence": 0.664,
+        "area": 8439,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          229,
+          191,
+          303,
+          249
+        ],
+        "confidence": 0.654,
+        "area": 4292,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          137,
+          215,
+          237,
+          301
+        ],
+        "confidence": 0.435,
+        "area": 8600,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          282,
+          237,
+          339,
+          298
+        ],
+        "confidence": 0.778,
+        "area": 3477,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          246,
+          174,
+          320,
+          244
+        ],
+        "confidence": 0.574,
+        "area": 5180,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          300,
+          231,
+          357,
+          293
+        ],
+        "confidence": 0.797,
+        "area": 3534,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          267,
+          183,
+          339,
+          238
+        ],
+        "confidence": 0.802,
+        "area": 3960,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          361,
+          265,
+          414,
+          321
+        ],
+        "confidence": 0.261,
+        "area": 2968,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          299,
+          138,
+          335,
+          178
+        ],
+        "confidence": 0.5,
+        "area": 1440,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          346,
+          223,
+          400,
+          275
+        ],
+        "confidence": 0.741,
+        "area": 2808,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          370,
+          333,
+          441,
+          406
+        ],
+        "confidence": 0.744,
+        "area": 5183,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          316,
+          360,
+          400,
+          463
+        ],
+        "confidence": 0.699,
+        "area": 8652,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          375,
+          259,
+          430,
+          314
+        ],
+        "confidence": 0.636,
+        "area": 3025,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          313,
+          134,
+          353,
+          178
+        ],
+        "confidence": 0.559,
+        "area": 1760,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          324,
+          173,
+          389,
+          232
+        ],
+        "confidence": 0.417,
+        "area": 3835,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          485,
+          369,
+          531,
+          416
+        ],
+        "confidence": 0.39,
+        "area": 2162,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          362,
+          220,
+          418,
+          271
+        ],
+        "confidence": 0.776,
+        "area": 2856,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          333,
+          350,
+          411,
+          435
+        ],
+        "confidence": 0.69,
+        "area": 6630,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          247,
+          423,
+          374,
+          480
+        ],
+        "confidence": 0.358,
+        "area": 7239,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          394,
+          253,
+          445,
+          309
+        ],
+        "confidence": 0.678,
+        "area": 2856,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          329,
+          134,
+          367,
+          178
+        ],
+        "confidence": 0.676,
+        "area": 1672,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          379,
+          215,
+          427,
+          262
+        ],
+        "confidence": 0.783,
+        "area": 2256,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          279,
+          180,
+          351,
+          268
+        ],
+        "confidence": 0.764,
+        "area": 6336,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          349,
+          325,
+          421,
+          392
+        ],
+        "confidence": 0.551,
+        "area": 4824,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          522,
+          420,
+          640,
+          479
+        ],
+        "confidence": 0.734,
+        "area": 6962,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          278,
+          333,
+          387,
+          429
+        ],
+        "confidence": 0.823,
+        "area": 10464,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          356,
+          167,
+          409,
+          217
+        ],
+        "confidence": 0.26,
+        "area": 2650,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          501,
+          380,
+          638,
+          480
+        ],
+        "confidence": 0.712,
+        "area": 13700,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          387,
+          235,
+          439,
+          287
+        ],
+        "confidence": 0.336,
+        "area": 2704,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          376,
+          201,
+          421,
+          247
+        ],
+        "confidence": 0.759,
+        "area": 2070,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          293,
+          317,
+          394,
+          393
+        ],
+        "confidence": 0.697,
+        "area": 7676,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          392,
+          388,
+          469,
+          479
+        ],
+        "confidence": 0.823,
+        "area": 7007,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          492,
+          337,
+          601,
+          467
+        ],
+        "confidence": 0.691,
+        "area": 14170,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          309,
+          280,
+          404,
+          349
+        ],
+        "confidence": 0.709,
+        "area": 6555,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          367,
+          353,
+          476,
+          462
+        ],
+        "confidence": 0.82,
+        "area": 11881,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          286,
+          161,
+          346,
+          241
+        ],
+        "confidence": 0.691,
+        "area": 4800,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          480,
+          326,
+          577,
+          433
+        ],
+        "confidence": 0.665,
+        "area": 10379,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          338,
+          129,
+          371,
+          168
+        ],
+        "confidence": 0.463,
+        "area": 1287,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          368,
+          194,
+          414,
+          235
+        ],
+        "confidence": 0.499,
+        "area": 1886,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          296,
+          250,
+          395,
+          336
+        ],
+        "confidence": 0.685,
+        "area": 8514,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          466,
+          308,
+          553,
+          403
+        ],
+        "confidence": 0.618,
+        "area": 8265,
+        "severity": "Moderate"
+      },
+      {
+        "bbox": [
+          463,
+          303,
+          528,
+          373
+        ],
+        "confidence": 0.537,
+        "area": 4550,
+        "severity": "Minor"
+      },
+      {
+        "bbox": [
+          360,
+          304,
+          420,
+          373
+        ],
+        "confidence": 0.291,
+        "area": 4140,
+        "severity": "Minor"
+      }
+    ]
   }
 ]

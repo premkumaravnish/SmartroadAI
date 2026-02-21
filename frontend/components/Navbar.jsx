@@ -57,6 +57,7 @@ function Navbar() {
           <ul className={`navbar-links ${menuOpen ? 'menu-open' : ''}`}>
             <li><Link href="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
             <li><button onClick={() => scrollTo('solution')} className="nav-btn-link">Solution</button></li>
+            <li><Link href="/navigate" onClick={() => setMenuOpen(false)}>🗺️ Navigate</Link></li>
             <li><button onClick={() => scrollTo('upload-section')} className="nav-btn-link">Upload</button></li>
             <li><button onClick={() => scrollTo('team-section')} className="nav-btn-link">Team</button></li>
             <li>

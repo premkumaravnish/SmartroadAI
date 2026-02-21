@@ -2,18 +2,12 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from 'next/navigation'
-import dynamic from 'next/dynamic'
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   Area, AreaChart
 } from "recharts";
-
-// Dynamically import map component with SSR disabled (Leaflet requires window)
-const PotholeAlertMap = dynamic(
-  () => import('../../components/PotholeAlertMap'),
-  { ssr: false, loading: () => <div style={{ padding: 20, textAlign: 'center', color: '#94a3b8' }}>Loading map...</div> }
-);
+import AdminMap from "../../components/AdminMap";
 
 /* ─────────────────────────────────────────
    GOOGLE FONTS INJECTION
@@ -510,7 +504,7 @@ function ReportsPage({ reports }) {
   const [evidenceOpen, setEvidenceOpen]   = useState(false);
   const [artifacts, setArtifacts]         = useState(null);
   const [artifactLog, setArtifactLog]     = useState(null);
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
   const PER_PAGE = 5;
 
   const filtered = reports.filter(r => {
@@ -546,6 +540,7 @@ function ReportsPage({ reports }) {
   const openReport = (r) => { setSelectedReport(r); setEditStatus(r.status); setEditProgress(r.progress); setNotes(""); };
 
   const fetchArtifacts = async (id) => {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
     try {
       const res = await fetch(`${backendUrl}/admin/report/${id}/artifacts`);
       if (!res.ok) throw new Error('no artifacts');
@@ -593,17 +588,17 @@ function ReportsPage({ reports }) {
               position:"relative",
             }}>
               {selectedReport.image_with_detections ? (
-                selectedReport.image_with_detections.startsWith('data:') || selectedReport.image_with_detections.startsWith('http') ? (
-                  <img src={selectedReport.image_with_detections} alt="detection" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
-                ) : (
-                  <img src={`${backendUrl}${selectedReport.image_with_detections}`} alt="detection" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
-                )
+                <img src={selectedReport.image_with_detections.startsWith('data:') ? selectedReport.image_with_detections : `data:image/jpeg;base64,${selectedReport.image_with_detections}`} alt="detection" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+              ) : (selectedReport.previews && selectedReport.previews.length > 0) ? (
+                <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:12 }}>
+                  <div style={{ display:'flex', gap:8, overflowX:'auto' }}>
+                    {selectedReport.previews.map((p, idx) => (
+                      <img key={idx} src={p.preview_image} alt={`preview-${idx}`} style={{ width:160, height:90, objectFit:'cover', borderRadius:8, border:'1px solid rgba(255,255,255,0.06)' }} />
+                    ))}
+                  </div>
+                </div>
               ) : selectedReport.image_path ? (
-                selectedReport.image_path.startsWith('data:') || selectedReport.image_path.startsWith('http') ? (
-                  <img src={selectedReport.image_path} alt="uploaded" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
-                ) : (
-                  <img src={`${backendUrl}${selectedReport.image_path}`} alt="uploaded" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
-                )
+                <img src={selectedReport.image_path} alt="uploaded" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
               ) : (
                 <>
                   <span style={{ fontSize:40 }}>{selectedReport.type==="Video"?"🎥":"📸"}</span>
@@ -736,6 +731,7 @@ function ReportsPage({ reports }) {
             </div>
           </div>
         ) : null}
+        </div>
       </>
     );
   }
@@ -859,15 +855,17 @@ function MapPage({ reports }) {
         <GlassCard hover={false} style={{ padding:0, overflow:"hidden" }}>
           <div style={{ padding:"12px 16px", borderBottom:"1px solid rgba(255,255,255,0.06)", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
             <span style={{ fontFamily:"'Rajdhani',sans-serif", fontWeight:700, fontSize:14, color:"#e2e8f0", letterSpacing:"0.06em" }}>LIVE MAP — NORTHERN INDIA</span>
-            <div style={{ display:"flex", gap:10, alignItems:"center" }}>
-              <span style={{ display:"flex", alignItems:"center", gap:6, fontFamily:"'Exo 2',sans-serif", fontSize:11, color:"#94a3b8" }}>
-                <span style={{ width:10, height:10, borderRadius:"50%", background:"#FF0000", display:"inline-block", border:"2px solid #FFF" }}/>
-                Pothole Locations
-              </span>
+            <div style={{ display:"flex", gap:14 }}>
+              {[["#4ade80","Minor"],["#fbbf24","Moderate"],["#f87171","Major"]].map(([c,l])=>(
+                <span key={l} style={{ display:"flex", alignItems:"center", gap:5, fontFamily:"'Exo 2',sans-serif", fontSize:11, color:"#94a3b8" }}>
+                  <span style={{ width:8, height:8, borderRadius:"50%", background:c, display:"inline-block" }}/>
+                  {l}
+                </span>
+              ))}
             </div>
           </div>
           <div style={{ width: '100%', height: 600 }}>
-            <PotholeAlertMap reports={reports} showAlertZones={false} />
+            <AdminMap reports={reports} />
           </div>
 
             {/* Coordinates overlay */}
@@ -881,7 +879,7 @@ function MapPage({ reports }) {
           <div style={{ fontFamily:"'Rajdhani',sans-serif", fontWeight:700, fontSize:13, color:"#94a3b8", letterSpacing:"0.1em", marginBottom:12 }}>ACTIVE PINS</div>
           <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
             {reports.map(r => {
-              const color = '#FF0000'; // All pothole pins are red
+              const color = (typeof severityLevel === 'function' && typeof SEV_COLOR !== 'undefined') ? (SEV_COLOR[severityLevel(r)] || '#4ade80') : '#4ade80';
               const isSel = selected?.id === r.id;
               return (
                 <div key={r.id} onClick={() => setSelected(isSel?null:r)} style={{
@@ -1033,7 +1031,7 @@ function AnalyticsPage({ stats: statsLocal, reports: reportsLocal }) {
 /* ─────────────────────────────────────────
    SETTINGS PAGE
 ───────────────────────────────────────── */
-function SettingsPage({ darkMode, setDarkMode, backend }) {
+function SettingsPage({ darkMode, setDarkMode }) {
   const [refreshInterval, setRefreshInterval] = useState(3);
   const [emailAlerts, setEmailAlerts]         = useState(true);
   const [majorAlerts, setMajorAlerts]         = useState(true);
@@ -1129,7 +1127,7 @@ const GLOBAL_CSS = `
 /* ─────────────────────────────────────────
    ROOT APP
 ───────────────────────────────────────── */
-export default function AdminPage() {
+export default function App() {
   const [activePage, setActivePage]   = useState("dashboard");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [darkMode, setDarkMode]       = useState(true);
@@ -1138,7 +1136,7 @@ export default function AdminPage() {
   const [backendOnline, setBackendOnline] = useState(true);
   const [lastUpdated, setLastUpdated] = useState("just now");
   const tickRef = useRef(null);
-  const backend = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+  const backend = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
 
   /* Simulated auto-refresh */
   useEffect(() => {
@@ -1179,7 +1177,7 @@ export default function AdminPage() {
     reports: <ReportsPage reports={reports} />,
     map: <MapPage reports={reports} />,
     analytics: <AnalyticsPage stats={stats} reports={reports} />,
-    settings: <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} backend={backend} />
+    settings: <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />
   };
 
   return (

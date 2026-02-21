@@ -4,8 +4,9 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
-// dynamically import VolunteerMap to avoid SSR issues (client-only)
+// dynamically import maps to avoid SSR issues (client-only)
 const VolunteerMap = dynamic(() => import('../../components/VolunteerMap'), { ssr: false })
+const PotholeAlertMap = dynamic(() => import('../../components/PotholeAlertMap'), { ssr: false })
 
 export default function VolunteerPage() {
   const router = useRouter()
@@ -19,7 +20,23 @@ export default function VolunteerPage() {
   const [liveLocation, setLiveLocation] = useState(false)
   const [detectionResult, setDetectionResult] = useState(null)
   const [wallet, setWallet] = useState(12)
+  const [reports, setReports] = useState([])
   const fileRef = useRef(null)
+
+  useEffect(() => {
+    fetchPotholes()
+  }, [])
+
+  const fetchPotholes = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/reports')
+      if (!response.ok) throw new Error('Failed to fetch reports')
+      const pothelesData = await response.json()
+      setReports(pothelesData)
+    } catch (err) {
+      console.error('Error fetching potholes:', err)
+    }
+  }
 
   const handleFile = (e) => {
     const f = e.target.files?.[0]
@@ -145,7 +162,8 @@ export default function VolunteerPage() {
 
   return (
     <div className="volunteer-page min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black pt-24 pb-12 px-4">
-      <div className="max-w-5xl mx-auto volunteer-card rounded-xl p-10 border border-gray-700 shadow-lg">
+      <div className="max-w-6xl mx-auto">
+        <div className="volunteer-card rounded-xl p-10 border border-gray-700 shadow-lg">
         <div className="volunteer-hero">
           <h1>Report a Pothole</h1>
         </div>
@@ -250,6 +268,7 @@ export default function VolunteerPage() {
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   )

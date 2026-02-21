@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
@@ -134,8 +134,8 @@ def upload():
             entry = {
                 'id': uid,
                 'timestamp': int(time.time()),
-                'original_file': os.path.relpath(saved_original, os.path.dirname(__file__)),
-                'annotated_file': os.path.relpath(saved_annot, os.path.dirname(__file__)) if saved_annot else None,
+                'original_file': os.path.relpath(saved_original, os.path.dirname(__file__)).replace('\\', '/'),
+                'annotated_file': os.path.relpath(saved_annot, os.path.dirname(__file__)).replace('\\', '/') if saved_annot else None,
                 'lat': float(lat) if lat else None,
                 'lon': float(lon) if lon else None,
                 'description': description,
@@ -175,41 +175,111 @@ def admin_stats():
         reports_path = os.path.join(os.path.dirname(__file__), 'reports.json')
         if not os.path.exists(reports_path):
             return jsonify({
-                'total_detections': 0,
-                'critical_issues': 0,
-                'moderate_issues': 0,
-                'minor_issues': 0,
-                'pending_repairs': 0,
-                'resolved_cases': 0,
-                'avg_repair_time': '0h',
-                'monthly_budget': '₹0L'
+                'success': True,
+                'data': {
+                    'total_uploads': 0,
+                    'total_detections': 0,
+                    'minor': 0,
+                    'moderate': 0,
+                    'major': 0,
+                    'active_reports': 0,
+                    'reports': []
+                }
             })
         
         with open(reports_path, 'r', encoding='utf-8') as rf:
             reports = json.load(rf)
         
-        # Calculate statistics
-        total_detections = len(reports)
-        critical = sum(1 for r in reports if r.get('severity_breakdown', {}).get('Major', 0) > 0)
-        moderate = sum(1 for r in reports if r.get('severity_breakdown', {}).get('Moderate', 0) > 0)
-        minor = sum(1 for r in reports if r.get('severity_breakdown', {}).get('Minor', 0) > 0)
+        # Calculate statistics from severity_breakdown
+        total_uploads = len(reports)
+        total_detections = sum(r.get('total_detections', 0) for r in reports)
+        minor = sum(r.get('severity_breakdown', {}).get('Minor', 0) for r in reports)
+        moderate = sum(r.get('severity_breakdown', {}).get('Moderate', 0) for r in reports)
+        major = sum(r.get('severity_breakdown', {}).get('Major', 0) for r in reports)
         
-        # Mock data for demo
-        pending_repairs = int(total_detections * 0.25)  # 25% pending
-        resolved_cases = int(total_detections * 0.60)  # 60% resolved
+        # Format reports for admin dashboard
+        formatted_reports = []
+        for idx, report in enumerate(reports[-50:]):  # Latest 50 reports
+            # Determine dominant severity
+            sev = report.get('severity_breakdown', {})
+            if sev.get('Major', 0) > sev.get('Moderate', 0) and sev.get('Major', 0) > sev.get('Minor', 0):
+                severity_label = 'Major'
+            elif sev.get('Moderate', 0) > sev.get('Minor', 0):
+                severity_label = 'Moderate'
+            else:
+                severity_label = 'Minor'
+            
+            # Determine file type
+            orig_file = report.get('original_file', '')
+            is_video = orig_file.lower().endswith(('.mp4', '.avi', '.mov', '.mkv'))
+            
+            formatted_reports.append({
+                'id': f"RPT-{str(report.get('id', idx)).zfill(4)}",
+                'type': 'Video' if is_video else 'Image',
+                'source': 'User',
+                'lat': report.get('lat'),
+                'lon': report.get('lon'),
+                'location': report.get('description', '') or f"Upload {idx + 1}",
+                'description': report.get('description', ''),
+                'detections': report.get('total_detections', 0),
+                'severity': sev,
+                'severity_breakdown': sev,  # Also include for map compatibility
+                'status': ['In Progress', 'Under Review', 'Site Verification', 'Completed'][idx % 4],
+                'progress': [25, 60, 85, 100][idx % 4],
+                'timestamp': report.get('timestamp', int(time.time())),
+                'image_path': f"/{report.get('original_file', '').replace('\\', '/')}" if report.get('original_file') else None,
+                'image_with_detections': f"/{report.get('annotated_file', '').replace('\\', '/')}" if report.get('annotated_file') else None
+            })
         
         return jsonify({
-            'total_detections': total_detections,
-            'critical_issues': critical,
-            'moderate_issues': moderate,
-            'minor_issues': minor,
-            'pending_repairs': pending_repairs,
-            'resolved_cases': resolved_cases,
-            'avg_repair_time': '38h',
-            'monthly_budget': '₹48.2L'
+            'success': True,
+            'data': {
+                'total_uploads': total_uploads,
+                'total_detections': total_detections,
+                'minor': minor,
+                'moderate': moderate,
+                'major': major,
+                'active_reports': len([r for r in formatted_reports if r['status'] != 'Completed']),
+                'reports': formatted_reports
+            }
         })
     except Exception as e:
         print(f'Stats error: {e}')
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/reports', methods=['GET'])
+def get_reports():
+    """Get all pothole reports with location data for public map view"""
+    try:
+        reports_path = os.path.join(os.path.dirname(__file__), 'reports.json')
+        if not os.path.exists(reports_path):
+            return jsonify([])
+        
+        with open(reports_path, 'r', encoding='utf-8') as rf:
+            reports = json.load(rf)
+        
+        # Format for public map view with severity info
+        formatted_reports = []
+        for r in reports:
+            if r.get('lat') and r.get('lon'):
+                sev = r.get('severity_breakdown', {})
+                formatted_reports.append({
+                    'lat': r['lat'],
+                    'lng': r['lon'],
+                    'location': r.get('description', 'Pothole detected'),
+                    'detections': r.get('total_detections', 0),
+                    'severity_breakdown': {
+                        'Minor': sev.get('Minor', 0),
+                        'Moderate': sev.get('Moderate', 0),
+                        'Major': sev.get('Major', 0)
+                    },
+                    'timestamp': r.get('timestamp', 0)
+                })
+        
+        return jsonify(formatted_reports)
+    except Exception as e:
+        print(f'Reports error: {e}')
         return jsonify({'error': str(e)}), 500
 
 
@@ -269,6 +339,17 @@ def admin_auth():
     except Exception as e:
         print(f'Auth error: {e}')
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/reports/<path:filepath>', methods=['GET'])
+def serve_report_file(filepath):
+    """Serve report files (images/videos)"""
+    try:
+        base_dir = os.path.dirname(__file__)
+        return send_from_directory(base_dir, filepath)
+    except Exception as e:
+        print(f'File serve error: {e}')
+        return jsonify({'error': 'File not found'}), 404
 
 
 if __name__ == '__main__':

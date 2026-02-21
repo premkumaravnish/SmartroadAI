@@ -1,15 +1,22 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import fetchDemoData from '@/services/operations/demoAPI'
+
+const PotholeAlertMap = dynamic(() => import('@/components/PotholeAlertMap'), { ssr: false })
 
 export default function DemoPage() {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [reports, setReports] = useState([])
+    const [userLocation, setUserLocation] = useState(null)
 
     useEffect(() => {
         loadDemo()
+        fetchPotholes()
+        requestLocation()
     }, [])
 
     const loadDemo = async () => {
@@ -27,9 +34,40 @@ export default function DemoPage() {
         }
     }
 
+    const fetchPotholes = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/reports')
+            if (!response.ok) throw new Error('Failed to fetch reports')
+            const pothelesData = await response.json()
+            setReports(pothelesData)
+        } catch (err) {
+            console.error('Error fetching potholes:', err)
+        }
+    }
+
+    const requestLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => setUserLocation({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+                () => console.log('Location access denied')
+            )
+        }
+    }
+
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 p-8">
-            <div className="max-w-2xl mx-auto">
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+            <div className="p-8">
+                <h1 className="text-4xl font-bold text-white mb-8">Demo API Test</h1>
+                
+                {/* Pothole Map */}
+                <div className="bg-gray-800 rounded-lg p-6 mb-8">
+                    <h2 className="text-xl font-semibold text-white mb-4">🗺️ Live Pothole Map</h2>
+                    <div style={{ height: '400px', borderRadius: '8px', overflow: 'hidden' }}>
+                        <PotholeAlertMap reports={reports} userLocation={userLocation} alertRadius={1000} />
+                    </div>
+                </div>
+            </div>
+            <div className="max-w-2xl mx-auto p-8 pt-0">
                 <h1 className="text-4xl font-bold text-white mb-8">Demo API Test</h1>
 
                 <div className="bg-gray-800 rounded-lg p-6 mb-6">
