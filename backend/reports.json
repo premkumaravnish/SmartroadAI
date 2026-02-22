@@ -6827,5 +6827,61 @@
         "severity": "Minor"
       }
     ]
+  },
+  {
+    "id": "1771794714859_b8199a84",
+    "timestamp": 1771794714,
+    "original_file": "reports/1771794714859_b8199a84_orig_pot.jpg",
+    "annotated_file": "reports/1771794714859_b8199a84_annot.png",
+    "lat": 25.96179527539771,
+    "lon": 86.79956522186026,
+    "description": "not critical",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771794729281_4ba59d72",
+    "timestamp": 1771794729,
+    "original_file": "reports/1771794729281_4ba59d72_orig_pot.jpg",
+    "annotated_file": "reports/1771794729281_4ba59d72_annot.png",
+    "lat": 25.96179527539771,
+    "lon": 86.79956522186026,
+    "description": "not critical",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
   }
 ]

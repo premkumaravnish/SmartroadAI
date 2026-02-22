@@ -128,6 +128,9 @@ export default function DemoPage() {
                     {loading ? 'Loading...' : 'Refresh Data'}
                 </button>
             </div>
+            <div style={{ marginTop:'24px', textAlign:'center', fontSize:'13px', color:'#64748b', fontFamily:"'Exo 2',sans-serif" }}>
+              Made with ❤️ by Prem Avnish & Team
+            </div>
         </div>
     )
 }

@@ -27,26 +27,26 @@ const createCustomIcon = (severity) => {
     const color = '#FF0000'
     
     const svgIcon = `
-      <svg width="36" height="46" xmlns="http://www.w3.org/2000/svg">
+      <svg width="32" height="42" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-opacity="0.6"/>
+          <filter id="shadow-alert" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.4"/>
           </filter>
         </defs>
-        <path d="M18 0 C8 0 0 8 0 18 C0 32 18 46 18 46 C18 46 36 32 36 18 C36 8 28 0 18 0 Z" 
-              fill="${color}" stroke="#FFFFFF" stroke-width="2.5" filter="url(#shadow)"/>
-        <circle cx="18" cy="18" r="10" fill="#FFF"/>
-        <circle cx="18" cy="18" r="7" fill="${color}"/>
-        <text x="18" y="23" font-size="14" font-weight="bold" text-anchor="middle" fill="#FFF">⚠</text>
+        <!-- Pin shape -->
+        <path d="M16 0 C10 0 5 5 5 11 C5 18 16 42 16 42 C16 42 27 18 27 11 C27 5 22 0 16 0 Z" 
+              fill="${color}" stroke="#FFFFFF" stroke-width="2" filter="url(#shadow-alert)"/>
+        <!-- Inner circle -->
+        <circle cx="16" cy="11" r="5" fill="#FFFFFF"/>
       </svg>
     `
     
     return L.divIcon({
       html: svgIcon,
       className: 'custom-pothole-icon',
-      iconSize: [36, 46],
-      iconAnchor: [18, 46],
-      popupAnchor: [0, -46]
+      iconSize: [32, 42],
+      iconAnchor: [16, 42],
+      popupAnchor: [0, -42]
     })
   } catch (e) {
     console.error('Error creating custom icon:', e)
@@ -98,6 +98,9 @@ function SetViewOnChange({ loc }) {
   return null
 }
 
+// Stable empty array to prevent infinite re-render from default param
+const EMPTY_REPORTS = []
+
 // Calculate distance between two coordinates (in meters)
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371e3 // Earth's radius in meters
@@ -114,23 +117,25 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return R * c // Distance in meters
 }
 
-export default function PotholeAlertMap({ userLocation, reports = [], alertRadius = 500, showAlertZones = true }) {
+export default function PotholeAlertMap({ userLocation, reports = EMPTY_REPORTS, alertRadius = 500, showAlertZones = true }) {
   const [showStatistics, setShowStatistics] = useState(true)
+  const [mounted, setMounted] = useState(false)
   const defaultCenter = [20.5937, 78.9629] // India center
   const mapRef = useRef(null)
   const [nearbyPotholes, setNearbyPotholes] = useState([])
   const [activeAlerts, setActiveAlerts] = useState([])
 
-  // Debug logging
+  // Wait for DOM to be ready before rendering Leaflet map
   useEffect(() => {
+    setMounted(true)
     console.log('🗺️ PotholeAlertMap mounted', { userLocation, reportsCount: reports.length })
   }, [])
 
   // Check for nearby potholes and trigger alerts
   useEffect(() => {
     if (!userLocation || !reports.length) {
-      setNearbyPotholes([])
-      setActiveAlerts([])
+      setNearbyPotholes(prev => prev.length ? [] : prev)
+      setActiveAlerts(prev => prev.length ? [] : prev)
       return
     }
 
@@ -301,6 +306,7 @@ export default function PotholeAlertMap({ userLocation, reports = [], alertRadiu
       )}
 
       {/* Map */}
+      {mounted ? (
       <MapContainer
         center={userLocation ? [userLocation.lat, userLocation.lon] : defaultCenter}
         zoom={userLocation ? 15 : 5}
@@ -427,6 +433,11 @@ export default function PotholeAlertMap({ userLocation, reports = [], alertRadiu
           )
         })}
       </MapContainer>
+      ) : (
+        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(15,23,42,0.5)', borderRadius: '8px' }}>
+          <div style={{ color: '#94a3b8', fontSize: '14px' }}>Loading map...</div>
+        </div>
+      )}
 
       <style jsx global>{`
         @keyframes pulse {

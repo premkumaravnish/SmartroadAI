@@ -265,8 +265,9 @@ def get_reports():
             if r.get('lat') and r.get('lon'):
                 sev = r.get('severity_breakdown', {})
                 formatted_reports.append({
+                    'id': r.get('id', ''),
                     'lat': r['lat'],
-                    'lng': r['lon'],
+                    'lon': r['lon'],
                     'location': r.get('description', 'Pothole detected'),
                     'detections': r.get('total_detections', 0),
                     'severity_breakdown': {
@@ -274,7 +275,8 @@ def get_reports():
                         'Moderate': sev.get('Moderate', 0),
                         'Major': sev.get('Major', 0)
                     },
-                    'timestamp': r.get('timestamp', 0)
+                    'timestamp': r.get('timestamp', 0),
+                    'annotated_file': r.get('annotated_file', '')
                 })
         
         return jsonify(formatted_reports)

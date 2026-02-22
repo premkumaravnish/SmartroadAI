@@ -50,17 +50,9 @@ export default function PlanRoutePage() {
 
     setSearching(true)
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`
-      )
+      const response = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`)
       const data = await response.json()
-      
-      const suggestions = data.map(item => ({
-        name: item.display_name.split(',')[0],
-        lat: parseFloat(item.lat),
-        lon: parseFloat(item.lon),
-        fullName: item.display_name
-      }))
+      const suggestions = Array.isArray(data.results) ? data.results : []
 
       setLocationSuggestions(prev => ({ ...prev, [type]: suggestions }))
     } catch (err) {

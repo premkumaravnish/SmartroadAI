@@ -26,6 +26,7 @@ export default function NavigatePage() {
   // Route planning states
   const [useRouteMode, setUseRouteMode] = useState(false)
   const [showRouteModal, setShowRouteModal] = useState(false)
+  const [showDemoVideo, setShowDemoVideo] = useState(false)
   const [showHowToUse, setShowHowToUse] = useState(false)
   const [showRouteAnalysis, setShowRouteAnalysis] = useState(true)
   const [showStatistics, setShowStatistics] = useState(true)
@@ -299,17 +300,9 @@ export default function NavigatePage() {
 
     setSearching(true)
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`
-      )
+      const response = await fetch(`/api/geocode?q=${encodeURIComponent(query)}`)
       const data = await response.json()
-      
-      const suggestions = data.map(item => ({
-        name: item.display_name.split(',')[0],
-        lat: parseFloat(item.lat),
-        lon: parseFloat(item.lon),
-        fullName: item.display_name
-      }))
+      const suggestions = Array.isArray(data.results) ? data.results : []
 
       setLocationSuggestions(prev => ({ ...prev, [type]: suggestions }))
     } catch (err) {
@@ -478,6 +471,39 @@ export default function NavigatePage() {
                 }}
               >
                 <span style={{ fontSize: '18px' }}>🚗</span> Plan Your Route
+              </button>
+
+              {/* Live Demo Button */}
+              <button
+                onClick={() => setShowDemoVideo(true)}
+                style={{
+                  padding: '14px 32px',
+                  background: 'linear-gradient(135deg, #A855F7 0%, #7C3AED 50%, #6D28D9 100%)',
+                  color: '#FFF',
+                  border: 'none',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  boxShadow: '0 8px 24px rgba(168, 85, 247, 0.4)',
+                  transition: 'all 0.3s ease',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.transform = 'translateY(-3px)';
+                  e.target.style.boxShadow = '0 12px 32px rgba(168, 85, 247, 0.6)';
+                  e.target.style.background = 'linear-gradient(135deg, #7C3AED 0%, #6D28D9 50%, #A855F7 100%)';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 8px 24px rgba(168, 85, 247, 0.4)';
+                  e.target.style.background = 'linear-gradient(135deg, #A855F7 0%, #7C3AED 50%, #6D28D9 100%)';
+                }}
+              >
+                <span style={{ fontSize: '18px' }}>▶️</span> Live Demo
               </button>
 
               {useRouteMode && (
@@ -1700,6 +1726,144 @@ export default function NavigatePage() {
           color: #06B6D4 !important;
         }
       `}</style>
+
+      {/* Live Demo Video Modal */}
+      {showDemoVideo && (
+        <div
+          onClick={() => setShowDemoVideo(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(12px)',
+            zIndex: 10000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '40px',
+            animation: 'fadeIn 0.3s ease'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: '100%',
+              maxWidth: '960px',
+              background: 'linear-gradient(135deg, rgba(15,23,42,0.98), rgba(30,41,59,0.98))',
+              borderRadius: '20px',
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+              boxShadow: '0 32px 80px rgba(0,0,0,0.6), 0 0 60px rgba(168,85,247,0.15)',
+              overflow: 'hidden',
+              animation: 'slideUp 0.4s ease'
+            }}
+          >
+            {/* Modal Header */}
+            <div style={{
+              padding: '20px 24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderBottom: '1px solid rgba(255,255,255,0.06)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '12px',
+                  background: 'linear-gradient(135deg, #A855F7, #7C3AED)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '20px'
+                }}>▶️</div>
+                <div>
+                  <div style={{ fontFamily: "'Rajdhani',sans-serif", fontWeight: 700, fontSize: '18px', color: '#e2e8f0', letterSpacing: '0.03em' }}>
+                    LIVE DEMO
+                  </div>
+                  <div style={{ fontFamily: "'Exo 2',sans-serif", fontSize: '12px', color: '#94a3b8' }}>
+                    See how SmartRoad AI detects potholes in real-time
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDemoVideo(false)}
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '10px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.05)',
+                  color: '#94a3b8',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => { e.target.style.background = 'rgba(239,68,68,0.15)'; e.target.style.color = '#f87171'; e.target.style.borderColor = 'rgba(239,68,68,0.3)'; }}
+                onMouseOut={(e) => { e.target.style.background = 'rgba(255,255,255,0.05)'; e.target.style.color = '#94a3b8'; e.target.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+              >✕</button>
+            </div>
+
+            {/* Video Embed */}
+            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+              <iframe
+                src="https://drive.google.com/file/d/1psvhooxza9FjLu7IN84f61SU7YM2nhWp/preview"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 'none'
+                }}
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Modal Footer */}
+            <div style={{
+              padding: '16px 24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderTop: '1px solid rgba(255,255,255,0.06)',
+              flexWrap: 'wrap',
+              gap: '12px'
+            }}>
+              <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#64748b', fontFamily: "'IBM Plex Mono',monospace" }}>
+                <span>🔍 AI-Powered Detection</span>
+                <span>📍 Real-time Tracking</span>
+                <span>⚡ Instant Alerts</span>
+              </div>
+              <button
+                onClick={() => setShowDemoVideo(false)}
+                style={{
+                  padding: '8px 20px',
+                  background: 'rgba(168, 85, 247, 0.15)',
+                  color: '#A855F7',
+                  border: '1px solid rgba(168, 85, 247, 0.3)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => { e.target.style.background = 'rgba(168,85,247,0.25)'; }}
+                onMouseOut={(e) => { e.target.style.background = 'rgba(168,85,247,0.15)'; }}
+              >Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div style={{ padding:'12px 0', textAlign:'center', fontSize:'13px', color:'#64748b', fontFamily:"'Exo 2',sans-serif", borderTop:'1px solid rgba(255,255,255,0.06)' }}>
+        Made with ❤️ by Prem Avnish & Team
+      </div>
     </div>
   )
 }

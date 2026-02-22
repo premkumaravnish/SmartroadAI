@@ -63,7 +63,7 @@ function Footer() {
 
         <div className="footer-bottom">
           <p>© 2026 SmartRoad AI — Built for Enyugma 2026, IIIT Bhagalpur Hackathon. All rights reserved.</p>
-          <p className="footer-team">Made with ❤️ by Prem Kumar, Nishu Singh, Priyanshu Yadav, Nirbhay Kumar & Jayram Kumar</p>
+          <p className="footer-team">Made with ❤️ by Prem Avnish & Team</p>
         </div>
       </div>
     </footer>
