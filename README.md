@@ -1,0 +1,2 @@
+# SmartroadAI
+Gemini said SmartRoadAI 🛣️ is a high-performance AI system by Team Achievers, led by Prem Kr Avnish. Using YOLOv8 &amp; FastAPI, it detects potholes in real-time with multi-level audio beeps and a Next.js safety map to revolutionize road maintenance and driver safety. 🚀🏆🏆🏆
