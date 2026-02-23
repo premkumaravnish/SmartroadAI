@@ -47,7 +47,7 @@ function Footer() {
               </li>
               <li>
                 <span className="contact-icon">🐙</span>
-                <a href="https://github.com/Nirbhayjr/smart-road" target="_blank" rel="noreferrer">GitHub Repository</a>
+                <a href="https://github.com/premkumaravnish/">GitHub Repository</a>
               </li>
               <li>
                 <span className="contact-icon">🏆</span>
