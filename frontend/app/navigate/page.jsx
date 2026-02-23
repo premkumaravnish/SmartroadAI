@@ -1754,112 +1754,96 @@ export default function NavigatePage() {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            backgroundColor: 'rgba(0, 0, 0, 0.92)',
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             zIndex: 10000,
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 'clamp(16px, 4vw, 48px)',
             animation: 'modalFadeIn 0.3s ease forwards'
           }}
         >
+          {/* Top Close Button - always visible */}
+          <button
+            onClick={() => setShowDemoVideo(false)}
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              border: '2px solid rgba(255,255,255,0.2)',
+              background: 'rgba(239, 68, 68, 0.15)',
+              color: '#fff',
+              cursor: 'pointer',
+              fontSize: '22px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s ease',
+              zIndex: 10001,
+              backdropFilter: 'blur(8px)',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = 'rgba(239,68,68,0.6)';
+              e.currentTarget.style.borderColor = '#f87171';
+              e.currentTarget.style.transform = 'scale(1.1)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = 'rgba(239,68,68,0.15)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >✕</button>
+
+          {/* Title above video */}
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '12px',
+            animation: 'modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+          }}>
+            <div style={{
+              fontFamily: "'Rajdhani', sans-serif",
+              fontWeight: 700,
+              fontSize: 'clamp(16px, 2.5vw, 22px)',
+              color: '#f1f5f9',
+              letterSpacing: '0.05em',
+            }}>
+              ▶️ SMARTROAD AI — LIVE DEMO
+            </div>
+            <div style={{
+              fontFamily: "'Exo 2', sans-serif",
+              fontSize: 'clamp(11px, 1.2vw, 13px)',
+              color: '#94a3b8',
+              marginTop: '4px'
+            }}>
+              YOLOv8 real-time pothole detection in action
+            </div>
+          </div>
+
+          {/* Compact Video Container */}
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: '100%',
-              maxWidth: '1060px',
-              background: 'linear-gradient(145deg, rgba(15,23,42,0.99), rgba(20,27,45,0.99))',
-              borderRadius: 'clamp(12px, 2vw, 24px)',
-              border: '1px solid rgba(168, 85, 247, 0.25)',
+              width: 'min(720px, 90vw)',
+              borderRadius: '14px',
               overflow: 'hidden',
-              animation: 'modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, glowPulse 4s ease-in-out infinite 0.5s'
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(168,85,247,0.12)',
+              animation: 'modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              background: '#000'
             }}
           >
-            {/* Modal Header */}
-            <div style={{
-              padding: 'clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 28px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              background: 'linear-gradient(90deg, rgba(168,85,247,0.06) 0%, rgba(124,58,237,0.03) 50%, transparent 100%)',
-              borderBottom: '1px solid rgba(168,85,247,0.12)'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 1.5vw, 14px)' }}>
-                <div style={{
-                  width: 'clamp(36px, 5vw, 44px)',
-                  height: 'clamp(36px, 5vw, 44px)',
-                  borderRadius: '14px',
-                  background: 'linear-gradient(135deg, #A855F7, #7C3AED)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 'clamp(16px, 2vw, 22px)',
-                  boxShadow: '0 4px 16px rgba(168,85,247,0.35)',
-                  flexShrink: 0
-                }}>▶️</div>
-                <div>
-                  <div style={{
-                    fontFamily: "'Rajdhani', sans-serif",
-                    fontWeight: 700,
-                    fontSize: 'clamp(15px, 2vw, 20px)',
-                    color: '#f1f5f9',
-                    letterSpacing: '0.05em',
-                    lineHeight: 1.2
-                  }}>
-                    SMARTROAD AI — LIVE DEMO
-                  </div>
-                  <div style={{
-                    fontFamily: "'Exo 2', sans-serif",
-                    fontSize: 'clamp(11px, 1.2vw, 13px)',
-                    color: '#94a3b8',
-                    marginTop: '2px'
-                  }}>
-                    YOLOv8 real-time pothole detection in action
-                  </div>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowDemoVideo(false)}
-                style={{
-                  width: 'clamp(32px, 4vw, 40px)',
-                  height: 'clamp(32px, 4vw, 40px)',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  background: 'rgba(255,255,255,0.04)',
-                  color: '#94a3b8',
-                  cursor: 'pointer',
-                  fontSize: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all 0.2s ease',
-                  flexShrink: 0
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.background = 'rgba(239,68,68,0.12)';
-                  e.currentTarget.style.color = '#f87171';
-                  e.currentTarget.style.borderColor = 'rgba(239,68,68,0.3)';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-                  e.currentTarget.style.color = '#94a3b8';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
-              >✕</button>
-            </div>
-
-            {/* Video Container */}
+            {/* 16:9 aspect ratio container */}
             <div style={{
               position: 'relative',
               paddingBottom: '56.25%',
               height: 0,
-              background: '#000'
             }}>
-              {/* Loading shimmer behind iframe */}
+              {/* Loading shimmer */}
               <div style={{
                 position: 'absolute',
                 top: 0, left: 0, right: 0, bottom: 0,
@@ -1871,8 +1855,8 @@ export default function NavigatePage() {
                 justifyContent: 'center'
               }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '36px', marginBottom: '8px' }}>🎬</div>
-                  <div style={{ color: '#64748b', fontSize: '13px', fontFamily: "'Exo 2', sans-serif" }}>Loading video...</div>
+                  <div style={{ fontSize: '32px', marginBottom: '6px' }}>🎬</div>
+                  <div style={{ color: '#64748b', fontSize: '12px', fontFamily: "'Exo 2', sans-serif" }}>Loading video...</div>
                 </div>
               </div>
               <iframe
@@ -1891,67 +1875,36 @@ export default function NavigatePage() {
                 title="SmartRoad AI Live Demo - Pothole Detection"
               />
             </div>
+          </div>
 
-            {/* Modal Footer */}
-            <div style={{
-              padding: 'clamp(12px, 1.5vw, 18px) clamp(16px, 2.5vw, 28px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              background: 'linear-gradient(90deg, rgba(168,85,247,0.04) 0%, transparent 100%)',
-              borderTop: '1px solid rgba(168,85,247,0.1)',
-              flexWrap: 'wrap',
-              gap: '12px'
-            }}>
-              <div style={{
-                display: 'flex',
-                gap: 'clamp(10px, 2vw, 20px)',
-                fontSize: 'clamp(10px, 1.1vw, 12px)',
-                color: '#64748b',
-                fontFamily: "'IBM Plex Mono', monospace",
-                flexWrap: 'wrap'
-              }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#A855F7', display: 'inline-block' }} />
-                  YOLOv8 Model
-                </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
-                  Real-time Detection
-                </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', display: 'inline-block' }} />
-                  GPS Tracking
-                </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }} />
-                  Instant Alerts
-                </span>
-              </div>
-              <button
-                onClick={() => setShowDemoVideo(false)}
-                style={{
-                  padding: '8px 22px',
-                  background: 'linear-gradient(135deg, rgba(168,85,247,0.15), rgba(124,58,237,0.15))',
-                  color: '#c084fc',
-                  border: '1px solid rgba(168,85,247,0.25)',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  transition: 'all 0.2s ease',
-                  fontFamily: "'Exo 2', sans-serif"
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(168,85,247,0.25), rgba(124,58,237,0.25))';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(168,85,247,0.15), rgba(124,58,237,0.15))';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >Close</button>
-            </div>
+          {/* Tags below video */}
+          <div style={{
+            display: 'flex',
+            gap: '16px',
+            marginTop: '14px',
+            fontSize: '11px',
+            color: '#64748b',
+            fontFamily: "'IBM Plex Mono', monospace",
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            animation: 'modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+          }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#A855F7', display: 'inline-block' }} />
+              YOLOv8
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
+              Real-time
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', display: 'inline-block' }} />
+              GPS
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }} />
+              Alerts
+            </span>
           </div>
         </div>
       )}
