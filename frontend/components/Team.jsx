@@ -50,6 +50,12 @@ function Team() {
           <h2 className="section-title">Meet the <span className="accent">Team</span></h2>
           <p className="section-subtitle">Four dedicated engineers united by a mission to make Indian roads safer through the power of artificial intelligence.</p>
         </div>
+        <div style={{ marginBottom: '48px', padding: '24px', background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '16px', textAlign: 'center' }}>
+          <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#3b82f6', marginBottom: '16px' }}>🙏 Acknowledgement</h3>
+          <p style={{ fontSize: '16px', color: '#94a3b8', lineHeight: '1.6', maxWidth: '800px', margin: '0 auto' }}>
+            We extend our heartfelt gratitude to <strong style={{ color: '#60a5fa' }}>Sujeet Sir</strong> and <strong style={{ color: '#60a5fa' }}>Hafeez Sir</strong> for their invaluable guidance, mentorship, and support throughout this project. Their expertise and encouragement have been instrumental in bringing SmartRoad AI to life.
+          </p>
+        </div>
         <div className="cards-grid cards-5">
           {members.map((m, i) => (
             <div className="glass-card team-card" key={i} style={{ '--team-color': m.color }}>

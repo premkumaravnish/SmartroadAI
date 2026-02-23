@@ -1861,9 +1861,6 @@ export default function NavigatePage() {
           </div>
         </div>
       )}
-      <div style={{ padding:'12px 0', textAlign:'center', fontSize:'13px', color:'#64748b', fontFamily:"'Exo 2',sans-serif", borderTop:'1px solid rgba(255,255,255,0.06)' }}>
-        Made with ❤️ by Prem Avnish & Team
-      </div>
     </div>
   )
 }

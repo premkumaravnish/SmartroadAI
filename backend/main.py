@@ -25,8 +25,8 @@ app.add_middleware(
 try:
     model = YOLO("pothole.pt")
 except:
-    print("Warning: pothole.pt not found, using default model")
-    model = YOLO("yolov8n.pt")
+    print("Warning: pothole.pt not found, loading failed")
+    model = None
 
 # Helper function to classify severity based on area
 def classify_severity(area):

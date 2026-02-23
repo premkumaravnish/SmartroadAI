@@ -1269,9 +1269,6 @@ export default function VolunteerPage() {
           {activePage === "map" && <MapPage reports={reports} />}
           {activePage === "rewards" && <RewardsPage wallet={wallet} />}
         </div>
-        <div style={{ padding:'8px 0', textAlign:'center', fontSize:'12px', color:'#64748b', fontFamily:"'Exo 2',sans-serif", borderTop:'1px solid rgba(255,255,255,0.06)', background:'rgba(15,23,42,0.5)' }}>
-          Made with ❤️ by Prem Avnish & Team
-        </div>
       </div>
     </div>
   )
