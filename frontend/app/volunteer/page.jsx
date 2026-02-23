@@ -883,17 +883,56 @@ function UserLoginScreen({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (isSignUp && !name) return setError('Please enter your name')
-    if (!email || !password) return setError('Please fill in all fields')
-    const userData = {
-      name: isSignUp ? name : email.split('@')[0],
-      email,
-      wallet: 12,
-      loggedIn: true,
-      joinedDate: new Date().toISOString()
+    setError('')
+    if (isSignUp && !name.trim()) return setError('Please enter your name')
+    if (!email.trim()) return setError('Please enter your email')
+    if (!password) return setError('Please enter a password')
+    if (isSignUp && password.length < 4) return setError('Password must be at least 4 characters')
+
+    // Get stored users database from localStorage
+    const usersDB = JSON.parse(localStorage.getItem('smartroad_users') || '{}')
+
+    if (isSignUp) {
+      // --- SIGN UP ---
+      if (usersDB[email.toLowerCase()]) {
+        return setError('An account with this email already exists. Please sign in.')
+      }
+      const userData = {
+        name: name.trim(),
+        email: email.toLowerCase().trim(),
+        password, // stored locally for demo purposes
+        wallet: 12,
+        loggedIn: true,
+        joinedDate: new Date().toISOString(),
+        reports: [],
+      }
+      // Save to users database
+      usersDB[email.toLowerCase()] = userData
+      localStorage.setItem('smartroad_users', JSON.stringify(usersDB))
+      // Save current session
+      const sessionData = { ...userData }
+      delete sessionData.password
+      localStorage.setItem('smartroad_user', JSON.stringify(sessionData))
+      onLogin(sessionData)
+    } else {
+      // --- SIGN IN ---
+      const stored = usersDB[email.toLowerCase()]
+      if (!stored) {
+        return setError('No account found with this email. Please sign up first.')
+      }
+      if (stored.password !== password) {
+        return setError('Incorrect password. Please try again.')
+      }
+      // Update login state
+      stored.loggedIn = true
+      usersDB[email.toLowerCase()] = stored
+      localStorage.setItem('smartroad_users', JSON.stringify(usersDB))
+      // Save current session (without password)
+      const sessionData = { ...stored }
+      delete sessionData.password
+      localStorage.setItem('smartroad_user', JSON.stringify(sessionData))
+      onLogin(sessionData)
     }
-    localStorage.setItem('smartroad_user', JSON.stringify(userData))
-    onLogin(userData)
   }
 
   return (
@@ -1069,7 +1108,25 @@ export default function VolunteerPage() {
   const [detectionResult, setDetectionResult] = useState(null)
   const [wallet, setWallet] = useState(12)
   const [reports, setReports] = useState([])
+  const [userReportIds, setUserReportIds] = useState([])
   const fileRef = useRef(null)
+
+  // Load user's report IDs from localStorage
+  const loadUserReports = (email) => {
+    try {
+      const stored = JSON.parse(localStorage.getItem(`smartroad_reports_${email}`) || '[]')
+      setUserReportIds(stored)
+    } catch { setUserReportIds([]) }
+  }
+
+  const saveUserReport = (reportId) => {
+    if (!user?.email) return
+    const key = `smartroad_reports_${user.email}`
+    const existing = JSON.parse(localStorage.getItem(key) || '[]')
+    const updated = [...existing, reportId]
+    localStorage.setItem(key, JSON.stringify(updated))
+    setUserReportIds(updated)
+  }
 
   // Check login status
   useEffect(() => {
@@ -1080,6 +1137,7 @@ export default function VolunteerPage() {
         if (parsed.loggedIn) {
           setUser(parsed)
           setWallet(parsed.wallet || 12)
+          loadUserReports(parsed.email)
         }
       } catch (e) { /* ignore */ }
     }
@@ -1094,16 +1152,18 @@ export default function VolunteerPage() {
     return () => clearInterval(interval)
   }, [])
 
+  const BACKEND = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000').replace(/\/+$/, '')
+
   const checkBackend = async () => {
     try {
-      const res = await fetch('http://localhost:5000/reports', { method: 'HEAD' })
+      const res = await fetch(`${BACKEND}/reports`, { method: 'HEAD' })
       setBackendOnline(res.ok)
     } catch { setBackendOnline(false) }
   }
 
   const fetchPotholes = async () => {
     try {
-      const response = await fetch('http://localhost:5000/reports')
+      const response = await fetch(`${BACKEND}/reports`)
       if (!response.ok) throw new Error('Failed')
       const data = await response.json()
       setReports(data)
@@ -1132,12 +1192,13 @@ export default function VolunteerPage() {
       const fd = new FormData()
       fd.append('file', file)
       fd.append('description', desc || '')
+      if (user?.email) fd.append('user_email', user.email)
       if (location) {
         fd.append('lat', location.lat)
         fd.append('lon', location.lon)
       }
 
-      const resp = await fetch('http://localhost:5000/upload', {
+      const resp = await fetch(`${BACKEND}/upload`, {
         method: 'POST', body: fd,
         headers: { 'Accept': 'application/json' },
       })
@@ -1155,6 +1216,9 @@ export default function VolunteerPage() {
         setDetectionResult(data)
         const newWallet = typeof data.wallet === 'number' ? data.wallet : wallet + 10
         setWallet(newWallet)
+        // Track this report for the current user
+        const reportId = data.id || data.timestamp || new Date().toISOString()
+        saveUserReport(reportId)
         // Update stored user
         const stored = localStorage.getItem('smartroad_user')
         if (stored) {
@@ -1180,6 +1244,7 @@ export default function VolunteerPage() {
   const handleLogin = (userData) => {
     setUser(userData)
     setWallet(userData.wallet || 12)
+    loadUserReports(userData.email)
   }
 
   // Loading screen
@@ -1207,6 +1272,13 @@ export default function VolunteerPage() {
   }
 
   const totalDetections = reports.reduce((sum, r) => sum + (r.total_detections || r.detections || 0), 0)
+
+  // Filter reports that belong to the current user
+  const myReports = reports.filter(r => {
+    const rid = r.id || r.timestamp
+    return userReportIds.includes(rid) || (r.user_email && user?.email && r.user_email === user.email)
+  })
+  const myDetections = myReports.reduce((sum, r) => sum + (r.total_detections || r.detections || 0), 0)
 
   return (
     <div style={{
@@ -1243,8 +1315,8 @@ export default function VolunteerPage() {
           {activePage === "dashboard" && (
             <DashboardPage
               wallet={wallet}
-              totalReports={reports.length}
-              totalDetections={totalDetections}
+              totalReports={myReports.length}
+              totalDetections={myDetections}
               backendOnline={backendOnline}
               setActive={setActivePage}
               user={user}
@@ -1265,7 +1337,7 @@ export default function VolunteerPage() {
               wallet={wallet}
             />
           )}
-          {activePage === "my-reports" && <MyReportsPage reports={reports} />}
+          {activePage === "my-reports" && <MyReportsPage reports={myReports} />}
           {activePage === "map" && <MapPage reports={reports} />}
           {activePage === "rewards" && <RewardsPage wallet={wallet} />}
         </div>

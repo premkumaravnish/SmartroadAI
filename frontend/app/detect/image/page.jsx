@@ -24,7 +24,8 @@ export default function ImageDetectionPage() {
 
     const fetchPotholes = async () => {
         try {
-            const response = await fetch('http://localhost:5000/reports')
+            const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000').replace(/\/+$/, '')
+            const response = await fetch(`${BACKEND_URL}/reports`)
             if (!response.ok) throw new Error('Failed to fetch reports')
             const pothelesData = await response.json()
             setReports(pothelesData)

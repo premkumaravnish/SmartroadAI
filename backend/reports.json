@@ -6883,5 +6883,150 @@
         "severity": "Moderate"
       }
     ]
+  },
+  {
+    "id": "1771865814959_f73fd151",
+    "timestamp": 1771865814,
+    "original_file": "reports/1771865814959_f73fd151_orig_Pi7_Tool_Prempic.jpg",
+    "annotated_file": "reports/1771865814959_f73fd151_annot.png",
+    "lat": 25.961782534306305,
+    "lon": 86.79956221374289,
+    "description": "pk",
+    "total_detections": 2,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 0,
+      "Major": 2
+    },
+    "detections": [
+      {
+        "bbox": [
+          9,
+          54,
+          240,
+          269
+        ],
+        "confidence": 0.585,
+        "area": 49665,
+        "severity": "Major"
+      },
+      {
+        "bbox": [
+          0,
+          0,
+          240,
+          215
+        ],
+        "confidence": 0.271,
+        "area": 51600,
+        "severity": "Major"
+      }
+    ]
+  },
+  {
+    "id": "1771867762401_cd082e73",
+    "timestamp": 1771867762,
+    "original_file": "reports/1771867762401_cd082e73_orig_pot.jpg",
+    "annotated_file": "reports/1771867762401_cd082e73_annot.png",
+    "lat": 25.961754762570134,
+    "lon": 86.79955432144567,
+    "description": "Prem",
+    "total_detections": 1,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 1,
+      "Major": 0
+    },
+    "detections": [
+      {
+        "bbox": [
+          21,
+          27,
+          174,
+          123
+        ],
+        "confidence": 0.878,
+        "area": 14688,
+        "severity": "Moderate"
+      }
+    ]
+  },
+  {
+    "id": "1771869282206_48bce9e7",
+    "timestamp": 1771869282,
+    "original_file": "reports/1771869282206_48bce9e7_orig_Pi7_Tool_Prempic.jpg",
+    "annotated_file": "reports/1771869282206_48bce9e7_annot.png",
+    "lat": 25.961738686628124,
+    "lon": 86.79955412239588,
+    "description": "hi",
+    "total_detections": 2,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 0,
+      "Major": 2
+    },
+    "detections": [
+      {
+        "bbox": [
+          9,
+          54,
+          240,
+          269
+        ],
+        "confidence": 0.585,
+        "area": 49665,
+        "severity": "Major"
+      },
+      {
+        "bbox": [
+          0,
+          0,
+          240,
+          215
+        ],
+        "confidence": 0.271,
+        "area": 51600,
+        "severity": "Major"
+      }
+    ]
+  },
+  {
+    "id": "1771869722788_008209cd",
+    "timestamp": 1771869722,
+    "original_file": "reports/1771869722788_008209cd_orig_Pi7_Tool_Prempic.jpg",
+    "annotated_file": "reports/1771869722788_008209cd_annot.png",
+    "lat": 25.961784111846246,
+    "lon": 86.79956482125003,
+    "description": "h",
+    "total_detections": 2,
+    "severity_breakdown": {
+      "Minor": 0,
+      "Moderate": 0,
+      "Major": 2
+    },
+    "detections": [
+      {
+        "bbox": [
+          9,
+          54,
+          240,
+          269
+        ],
+        "confidence": 0.585,
+        "area": 49665,
+        "severity": "Major"
+      },
+      {
+        "bbox": [
+          0,
+          0,
+          240,
+          215
+        ],
+        "confidence": 0.271,
+        "area": 51600,
+        "severity": "Major"
+      }
+    ]
   }
 ]

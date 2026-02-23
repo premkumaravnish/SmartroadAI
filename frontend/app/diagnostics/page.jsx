@@ -14,7 +14,8 @@ export default function DiagnosticsPage() {
         setStatus('✅ Page loaded')
         
         // Test backend connection
-        const response = await axios.get('http://localhost:5000/reports')
+        const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000').replace(/\/+$/, '')
+        const response = await axios.get(`${BACKEND_URL}/reports`)
         setReports(response.data)
         
         setStatus('✅ Backend reachable - Map components should work')

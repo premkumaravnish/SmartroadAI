@@ -510,7 +510,7 @@ function ReportsPage({ reports }) {
   const [evidenceOpen, setEvidenceOpen]   = useState(false);
   const [artifacts, setArtifacts]         = useState(null);
   const [artifactLog, setArtifactLog]     = useState(null);
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+  const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000').replace(/\/+$/, '');
   const PER_PAGE = 5;
 
   const filtered = reports.filter(r => {
@@ -1138,7 +1138,7 @@ export default function AdminPage() {
   const [backendOnline, setBackendOnline] = useState(true);
   const [lastUpdated, setLastUpdated] = useState("just now");
   const tickRef = useRef(null);
-  const backend = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+  const backend = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000').replace(/\/+$/, '');
 
   /* Simulated auto-refresh */
   useEffect(() => {

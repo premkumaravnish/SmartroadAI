@@ -48,7 +48,8 @@ export default function NavigatePage() {
     const fetchReports = async () => {
       setLoading(true)
       try {
-        const response = await axios.get('http://localhost:5000/reports')
+        const BACKEND_URL = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000').replace(/\/+$/, '')
+        const response = await axios.get(`${BACKEND_URL}/reports`)
         setReports(response.data || [])
         setError(null)
       } catch (err) {
