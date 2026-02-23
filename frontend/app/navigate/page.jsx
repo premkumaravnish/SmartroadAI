@@ -1725,6 +1725,23 @@ export default function NavigatePage() {
         .leaflet-control-attribution a {
           color: #06B6D4 !important;
         }
+
+        @keyframes modalFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes modalSlideUp {
+          from { opacity: 0; transform: translateY(40px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        @keyframes glowPulse {
+          0%, 100% { box-shadow: 0 0 20px rgba(168,85,247,0.15), 0 32px 80px rgba(0,0,0,0.5); }
+          50% { box-shadow: 0 0 40px rgba(168,85,247,0.25), 0 32px 80px rgba(0,0,0,0.5); }
+        }
       `}</style>
 
       {/* Live Demo Video Modal */}
@@ -1737,80 +1754,127 @@ export default function NavigatePage() {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-            backdropFilter: 'blur(12px)',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
             zIndex: 10000,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '40px',
-            animation: 'fadeIn 0.3s ease'
+            padding: 'clamp(16px, 4vw, 48px)',
+            animation: 'modalFadeIn 0.3s ease forwards'
           }}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
               width: '100%',
-              maxWidth: '960px',
-              background: 'linear-gradient(135deg, rgba(15,23,42,0.98), rgba(30,41,59,0.98))',
-              borderRadius: '20px',
-              border: '1px solid rgba(168, 85, 247, 0.3)',
-              boxShadow: '0 32px 80px rgba(0,0,0,0.6), 0 0 60px rgba(168,85,247,0.15)',
+              maxWidth: '1060px',
+              background: 'linear-gradient(145deg, rgba(15,23,42,0.99), rgba(20,27,45,0.99))',
+              borderRadius: 'clamp(12px, 2vw, 24px)',
+              border: '1px solid rgba(168, 85, 247, 0.25)',
               overflow: 'hidden',
-              animation: 'slideUp 0.4s ease'
+              animation: 'modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, glowPulse 4s ease-in-out infinite 0.5s'
             }}
           >
             {/* Modal Header */}
             <div style={{
-              padding: '20px 24px',
+              padding: 'clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 28px)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              borderBottom: '1px solid rgba(255,255,255,0.06)'
+              background: 'linear-gradient(90deg, rgba(168,85,247,0.06) 0%, rgba(124,58,237,0.03) 50%, transparent 100%)',
+              borderBottom: '1px solid rgba(168,85,247,0.12)'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 1.5vw, 14px)' }}>
                 <div style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '12px',
+                  width: 'clamp(36px, 5vw, 44px)',
+                  height: 'clamp(36px, 5vw, 44px)',
+                  borderRadius: '14px',
                   background: 'linear-gradient(135deg, #A855F7, #7C3AED)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '20px'
+                  fontSize: 'clamp(16px, 2vw, 22px)',
+                  boxShadow: '0 4px 16px rgba(168,85,247,0.35)',
+                  flexShrink: 0
                 }}>▶️</div>
                 <div>
-                  <div style={{ fontFamily: "'Rajdhani',sans-serif", fontWeight: 700, fontSize: '18px', color: '#e2e8f0', letterSpacing: '0.03em' }}>
-                    LIVE DEMO
+                  <div style={{
+                    fontFamily: "'Rajdhani', sans-serif",
+                    fontWeight: 700,
+                    fontSize: 'clamp(15px, 2vw, 20px)',
+                    color: '#f1f5f9',
+                    letterSpacing: '0.05em',
+                    lineHeight: 1.2
+                  }}>
+                    SMARTROAD AI — LIVE DEMO
                   </div>
-                  <div style={{ fontFamily: "'Exo 2',sans-serif", fontSize: '12px', color: '#94a3b8' }}>
-                    See how SmartRoad AI detects potholes in real-time
+                  <div style={{
+                    fontFamily: "'Exo 2', sans-serif",
+                    fontSize: 'clamp(11px, 1.2vw, 13px)',
+                    color: '#94a3b8',
+                    marginTop: '2px'
+                  }}>
+                    YOLOv8 real-time pothole detection in action
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => setShowDemoVideo(false)}
                 style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: '10px',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  background: 'rgba(255,255,255,0.05)',
+                  width: 'clamp(32px, 4vw, 40px)',
+                  height: 'clamp(32px, 4vw, 40px)',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'rgba(255,255,255,0.04)',
                   color: '#94a3b8',
                   cursor: 'pointer',
                   fontSize: '18px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  transition: 'all 0.2s'
+                  transition: 'all 0.2s ease',
+                  flexShrink: 0
                 }}
-                onMouseOver={(e) => { e.target.style.background = 'rgba(239,68,68,0.15)'; e.target.style.color = '#f87171'; e.target.style.borderColor = 'rgba(239,68,68,0.3)'; }}
-                onMouseOut={(e) => { e.target.style.background = 'rgba(255,255,255,0.05)'; e.target.style.color = '#94a3b8'; e.target.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = 'rgba(239,68,68,0.12)';
+                  e.currentTarget.style.color = '#f87171';
+                  e.currentTarget.style.borderColor = 'rgba(239,68,68,0.3)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                  e.currentTarget.style.color = '#94a3b8';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
               >✕</button>
             </div>
 
-            {/* Video Embed */}
-            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+            {/* Video Container */}
+            <div style={{
+              position: 'relative',
+              paddingBottom: '56.25%',
+              height: 0,
+              background: '#000'
+            }}>
+              {/* Loading shimmer behind iframe */}
+              <div style={{
+                position: 'absolute',
+                top: 0, left: 0, right: 0, bottom: 0,
+                background: 'linear-gradient(90deg, rgba(30,41,59,1) 25%, rgba(51,65,85,0.6) 50%, rgba(30,41,59,1) 75%)',
+                backgroundSize: '200% 100%',
+                animation: 'shimmer 1.5s ease-in-out infinite',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '36px', marginBottom: '8px' }}>🎬</div>
+                  <div style={{ color: '#64748b', fontSize: '13px', fontFamily: "'Exo 2', sans-serif" }}>Loading video...</div>
+                </div>
+              </div>
               <iframe
                 src="https://drive.google.com/file/d/1psvhooxza9FjLu7IN84f61SU7YM2nhWp/preview"
                 style={{
@@ -1819,43 +1883,73 @@ export default function NavigatePage() {
                   left: 0,
                   width: '100%',
                   height: '100%',
-                  border: 'none'
+                  border: 'none',
+                  zIndex: 1
                 }}
-                allow="autoplay; encrypted-media"
+                allow="autoplay; encrypted-media; fullscreen"
                 allowFullScreen
+                title="SmartRoad AI Live Demo - Pothole Detection"
               />
             </div>
 
             {/* Modal Footer */}
             <div style={{
-              padding: '16px 24px',
+              padding: 'clamp(12px, 1.5vw, 18px) clamp(16px, 2.5vw, 28px)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              borderTop: '1px solid rgba(255,255,255,0.06)',
+              background: 'linear-gradient(90deg, rgba(168,85,247,0.04) 0%, transparent 100%)',
+              borderTop: '1px solid rgba(168,85,247,0.1)',
               flexWrap: 'wrap',
               gap: '12px'
             }}>
-              <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: '#64748b', fontFamily: "'IBM Plex Mono',monospace" }}>
-                <span>🔍 AI-Powered Detection</span>
-                <span>📍 Real-time Tracking</span>
-                <span>⚡ Instant Alerts</span>
+              <div style={{
+                display: 'flex',
+                gap: 'clamp(10px, 2vw, 20px)',
+                fontSize: 'clamp(10px, 1.1vw, 12px)',
+                color: '#64748b',
+                fontFamily: "'IBM Plex Mono', monospace",
+                flexWrap: 'wrap'
+              }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#A855F7', display: 'inline-block' }} />
+                  YOLOv8 Model
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
+                  Real-time Detection
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3b82f6', display: 'inline-block' }} />
+                  GPS Tracking
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }} />
+                  Instant Alerts
+                </span>
               </div>
               <button
                 onClick={() => setShowDemoVideo(false)}
                 style={{
-                  padding: '8px 20px',
-                  background: 'rgba(168, 85, 247, 0.15)',
-                  color: '#A855F7',
-                  border: '1px solid rgba(168, 85, 247, 0.3)',
-                  borderRadius: '8px',
+                  padding: '8px 22px',
+                  background: 'linear-gradient(135deg, rgba(168,85,247,0.15), rgba(124,58,237,0.15))',
+                  color: '#c084fc',
+                  border: '1px solid rgba(168,85,247,0.25)',
+                  borderRadius: '10px',
                   cursor: 'pointer',
                   fontSize: '13px',
                   fontWeight: 600,
-                  transition: 'all 0.2s'
+                  transition: 'all 0.2s ease',
+                  fontFamily: "'Exo 2', sans-serif"
                 }}
-                onMouseOver={(e) => { e.target.style.background = 'rgba(168,85,247,0.25)'; }}
-                onMouseOut={(e) => { e.target.style.background = 'rgba(168,85,247,0.15)'; }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(168,85,247,0.25), rgba(124,58,237,0.25))';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(168,85,247,0.15), rgba(124,58,237,0.15))';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
               >Close</button>
             </div>
           </div>
