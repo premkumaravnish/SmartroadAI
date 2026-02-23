@@ -28,6 +28,15 @@ except Exception as e:
     print('Failed to load model:', e)
 
 
+@app.route('/', methods=['GET'])
+def health():
+    return jsonify({
+        'status': 'online',
+        'service': 'SmartRoad AI Backend',
+        'endpoints': ['/upload', '/reports', '/admin/stats', '/admin/auth', '/admin/reports']
+    })
+
+
 @app.route('/upload', methods=['POST'])
 def upload():
     if 'file' not in request.files:
