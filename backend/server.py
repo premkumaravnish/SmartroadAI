@@ -6,12 +6,18 @@ import tempfile
 import cv2
 import base64
 import numpy as np
+import gc
 from ultralytics import YOLO
 import json
 import shutil
 import time
 import uuid
 from detect_pothole import detect_pothole
+
+# Memory optimization: limit threads
+os.environ['OMP_NUM_THREADS'] = '1'
+os.environ['MKL_NUM_THREADS'] = '1'
+os.environ['OPENBLAS_NUM_THREADS'] = '1'
 
 app = Flask(__name__)
 # allow cross-origin requests (development)
@@ -20,10 +26,20 @@ CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 # Path to model in repo
 MODEL_PATH = os.path.join(os.path.dirname(__file__), 'pothole.pt')
 
-# Load model once
+# Inference image size (smaller = less RAM)
+INFER_SIZE = 416
+
+# Load model once with memory-efficient settings
 model = None
 try:
     model = YOLO(MODEL_PATH)
+    # Warm up with a tiny image to avoid first-request spike
+    import numpy as _np
+    _dummy = _np.zeros((INFER_SIZE, INFER_SIZE, 3), dtype=_np.uint8)
+    model.predict(_dummy, imgsz=INFER_SIZE, verbose=False)
+    del _dummy, _np
+    gc.collect()
+    print(f'Model loaded and warmed up (imgsz={INFER_SIZE})')
 except Exception as e:
     print('Failed to load model:', e)
 
@@ -61,7 +77,7 @@ def upload():
         return jsonify({'error': 'Model not loaded on server'}), 500
 
     try:
-        img, detections, total, severity_breakdown, _ = detect_pothole(path, model)
+        img, detections, total, severity_breakdown, _ = detect_pothole(path, model, imgsz=INFER_SIZE)
     except Exception as e:
         print(f'Detection error: {e}')
         return jsonify({'error': f'Detection error: {e}'}), 500
@@ -173,6 +189,9 @@ def upload():
     except Exception as e:
         print('Report persistence error:', e)
         response['message'] = response.get('message', '') or 'Processed, but failed to save report'
+
+    # Free memory after each upload
+    gc.collect()
 
     return jsonify(response)
 

@@ -48,7 +48,7 @@ def calculate_iou(box1, box2):
     return inter_area / union_area
 
 
-def detect_image(image_path, model):
+def detect_image(image_path, model, imgsz=416):
     """
     Detect potholes in a single image.
     Returns: (img_with_boxes, detections_list, total, severity_breakdown, annotated_base64)
@@ -57,8 +57,15 @@ def detect_image(image_path, model):
     if img is None:
         return None, [], 0, {'Minor': 0, 'Moderate': 0, 'Major': 0}, None
 
-    # Run detection
-    results = model(img)
+    # Resize large images to save memory (keep aspect ratio for annotation)
+    h, w = img.shape[:2]
+    max_dim = 1024
+    if max(h, w) > max_dim:
+        scale = max_dim / max(h, w)
+        img = cv2.resize(img, (int(w * scale), int(h * scale)))
+
+    # Run detection with smaller inference size
+    results = model(img, imgsz=imgsz, verbose=False)
 
     detections = []
     total = 0
@@ -104,7 +111,7 @@ def detect_image(image_path, model):
     return img, detections, total, severity_breakdown, None
 
 
-def detect_video(video_path, model, iou_threshold=0.5, frame_skip=2):
+def detect_video(video_path, model, iou_threshold=0.5, frame_skip=5, imgsz=416, max_frames=60):
     """
     Detect potholes in video, deduplicate across frames using IoU.
     
@@ -112,7 +119,9 @@ def detect_video(video_path, model, iou_threshold=0.5, frame_skip=2):
         video_path: Path to video file
         model: YOLO model
         iou_threshold: IoU threshold for deduplication (default 0.5)
-        frame_skip: Skip frames for speed (e.g., 2 = process every 2nd frame)
+        frame_skip: Skip frames for speed (default 5 to save memory)
+        imgsz: Inference image size
+        max_frames: Max frames to process (limit memory usage)
     
     Returns:
         (last_frame_with_boxes, unique_detections_list, unique_total, severity_breakdown, None)
@@ -136,11 +145,15 @@ def detect_video(video_path, model, iou_threshold=0.5, frame_skip=2):
         if frame_count % frame_skip != 0:
             continue
 
-        # Resize frame to speed up detection
-        frame_resized = cv2.resize(frame, (640, 480))
+        # Limit total frames processed to prevent OOM
+        if frame_count // frame_skip > max_frames:
+            break
 
-        # Run detection
-        results = model(frame_resized)
+        # Resize frame to speed up detection and save memory
+        frame_resized = cv2.resize(frame, (480, 360))
+
+        # Run detection with smaller inference size
+        results = model(frame_resized, imgsz=imgsz, verbose=False)
 
         frame_detections = []
         for r in results:
@@ -206,7 +219,7 @@ def detect_video(video_path, model, iou_threshold=0.5, frame_skip=2):
     return processed_frame, unique_detections, total, severity_breakdown, None
 
 
-def detect_pothole(file_path, model, is_video=None):
+def detect_pothole(file_path, model, is_video=None, imgsz=416):
     """
     Main entry point: detect potholes in image or video.
     
@@ -214,10 +227,12 @@ def detect_pothole(file_path, model, is_video=None):
         file_path: Path to image or video file
         model: Loaded YOLO model
         is_video: If None, auto-detect; if True/False, force type
+        imgsz: Inference image size (smaller = less memory)
     
     Returns:
         (annotated_image, detections, total, severity_breakdown)
     """
+    import gc
     if is_video is None:
         # Auto-detect based on file extension
         video_extensions = {'.mp4', '.avi', '.mov', '.mkv', '.flv', '.wmv'}
@@ -225,6 +240,9 @@ def detect_pothole(file_path, model, is_video=None):
         is_video = ext in video_extensions
 
     if is_video:
-        return detect_video(file_path, model)
+        result = detect_video(file_path, model, imgsz=imgsz)
     else:
-        return detect_image(file_path, model)
+        result = detect_image(file_path, model, imgsz=imgsz)
+    
+    gc.collect()
+    return result
