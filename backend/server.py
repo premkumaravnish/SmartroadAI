@@ -289,6 +289,47 @@ def admin_stats():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+@app.route('/admin/report/<report_id>/artifacts', methods=['GET'])
+def report_artifacts(report_id):
+    """Return file paths for a specific report's evidence (original, annotated, thumbs)."""
+    try:
+        reports_path = os.path.join(os.path.dirname(__file__), 'reports.json')
+        if not os.path.exists(reports_path):
+            return jsonify({'success': False, 'error': 'No reports'}), 404
+
+        with open(reports_path, 'r', encoding='utf-8') as rf:
+            reports = json.load(rf)
+
+        # The frontend sends ids like "RPT-<raw_id>", strip the prefix
+        raw_id = report_id.replace('RPT-', '') if report_id.startswith('RPT-') else report_id
+
+        found = None
+        for r in reports:
+            if str(r.get('id', '')) == raw_id:
+                found = r
+                break
+
+        if not found:
+            return jsonify({'success': False, 'error': 'Report not found'}), 404
+
+        base_dir = os.path.dirname(__file__)
+        orig = found.get('original_file', '')
+        annot = found.get('annotated_file', '')
+
+        # Build artifacts response
+        data = {
+            'original': f"/{orig.replace(chr(92), '/')}" if orig and os.path.exists(os.path.join(base_dir, orig)) else None,
+            'annotated': f"/{annot.replace(chr(92), '/')}" if annot and os.path.exists(os.path.join(base_dir, annot)) else None,
+            'thumbs': [],
+            'log': None,
+        }
+
+        return jsonify({'success': True, 'data': data})
+    except Exception as e:
+        print(f'Artifacts error: {e}')
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 @app.route('/reports', methods=['GET'])
 def get_reports():
     """Get all pothole reports with location data for public map view"""
