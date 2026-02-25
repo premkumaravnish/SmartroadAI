@@ -7,17 +7,19 @@ import cv2
 import base64
 import numpy as np
 import gc
-from ultralytics import YOLO
 import json
 import shutil
 import time
 import uuid
-from detect_pothole import detect_pothole
+import threading
 
-# Memory optimization: limit threads
+# Memory optimization: limit threads BEFORE importing torch/ultralytics
 os.environ['OMP_NUM_THREADS'] = '1'
 os.environ['MKL_NUM_THREADS'] = '1'
 os.environ['OPENBLAS_NUM_THREADS'] = '1'
+
+from ultralytics import YOLO
+from detect_pothole import detect_pothole
 
 app = Flask(__name__)
 # allow cross-origin requests (development)
@@ -29,19 +31,21 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), 'pothole.pt')
 # Inference image size (smaller = less RAM)
 INFER_SIZE = 416
 
-# Load model once with memory-efficient settings
+# Lazy model loading — don't block server startup
 model = None
-try:
-    model = YOLO(MODEL_PATH)
-    # Warm up with a tiny image to avoid first-request spike
-    import numpy as _np
-    _dummy = _np.zeros((INFER_SIZE, INFER_SIZE, 3), dtype=_np.uint8)
-    model.predict(_dummy, imgsz=INFER_SIZE, verbose=False)
-    del _dummy, _np
-    gc.collect()
-    print(f'Model loaded and warmed up (imgsz={INFER_SIZE})')
-except Exception as e:
-    print('Failed to load model:', e)
+model_lock = threading.Lock()
+
+def get_model():
+    """Load model on first use instead of at startup (prevents Render port timeout)."""
+    global model
+    if model is None:
+        with model_lock:
+            if model is None:  # double-check inside lock
+                print('Loading YOLO model...')
+                model = YOLO(MODEL_PATH)
+                gc.collect()
+                print(f'Model loaded (imgsz={INFER_SIZE})')
+    return model
 
 
 @app.route('/', methods=['GET'])
@@ -73,11 +77,12 @@ def upload():
     description = request.form.get('description', '')
 
     # Run detection using unified detector (auto-detects image/video)
-    if model is None:
+    loaded_model = get_model()
+    if loaded_model is None:
         return jsonify({'error': 'Model not loaded on server'}), 500
 
     try:
-        img, detections, total, severity_breakdown, _ = detect_pothole(path, model, imgsz=INFER_SIZE)
+        img, detections, total, severity_breakdown, _ = detect_pothole(path, loaded_model, imgsz=INFER_SIZE)
     except Exception as e:
         print(f'Detection error: {e}')
         return jsonify({'error': f'Detection error: {e}'}), 500
@@ -246,17 +251,25 @@ def admin_stats():
                 'type': 'Video' if is_video else 'Image',
                 'source': 'User',
                 'lat': report.get('lat'),
+                'lng': report.get('lon'),
                 'lon': report.get('lon'),
                 'location': report.get('description', '') or f"Upload {idx + 1}",
                 'description': report.get('description', ''),
                 'detections': report.get('total_detections', 0),
-                'severity': sev,
-                'severity_breakdown': sev,  # Also include for map compatibility
+                'severity': {
+                    'minor': sev.get('Minor', 0),
+                    'moderate': sev.get('Moderate', 0),
+                    'major': sev.get('Major', 0),
+                    'Minor': sev.get('Minor', 0),
+                    'Moderate': sev.get('Moderate', 0),
+                    'Major': sev.get('Major', 0),
+                },
+                'severity_breakdown': sev,
                 'status': ['In Progress', 'Under Review', 'Site Verification', 'Completed'][idx % 4],
                 'progress': [25, 60, 85, 100][idx % 4],
                 'timestamp': report.get('timestamp', int(time.time())),
-                'image_path': f"/{report.get('original_file', '').replace('\\', '/')}" if report.get('original_file') else None,
-                'image_with_detections': f"/{report.get('annotated_file', '').replace('\\', '/')}" if report.get('annotated_file') else None
+                'image_path': f"/{report.get('original_file', '').replace(chr(92), '/')}" if report.get('original_file') else None,
+                'image_with_detections': f"/{report.get('annotated_file', '').replace(chr(92), '/')}" if report.get('annotated_file') else None
             })
         
         return jsonify({
