@@ -166,6 +166,7 @@ def upload():
                 'timestamp': int(time.time()),
                 'original_file': os.path.relpath(saved_original, os.path.dirname(__file__)).replace('\\', '/'),
                 'annotated_file': os.path.relpath(saved_annot, os.path.dirname(__file__)).replace('\\', '/') if saved_annot else None,
+                'annotated_base64': response.get('annotated'),
                 'lat': float(lat) if lat else None,
                 'lon': float(lon) if lon else None,
                 'description': description,
@@ -260,13 +261,11 @@ def admin_stats():
                     'minor': sev.get('Minor', 0),
                     'moderate': sev.get('Moderate', 0),
                     'major': sev.get('Major', 0),
-                    'Minor': sev.get('Minor', 0),
-                    'Moderate': sev.get('Moderate', 0),
-                    'Major': sev.get('Major', 0),
                 },
                 'severity_breakdown': sev,
-                'status': ['In Progress', 'Under Review', 'Site Verification', 'Completed'][idx % 4],
-                'progress': [25, 60, 85, 100][idx % 4],
+                'status': report.get('admin_status') or ['In Progress', 'Under Review', 'Site Verification', 'Completed'][idx % 4],
+                'progress': report.get('admin_progress') if report.get('admin_progress') is not None else [25, 60, 85, 100][idx % 4],
+                'notes': report.get('admin_notes', ''),
                 'timestamp': report.get('timestamp', int(time.time())),
                 'image_path': f"/{report.get('original_file', '').replace(chr(92), '/')}" if report.get('original_file') else None,
                 'image_with_detections': f"/{report.get('annotated_file', '').replace(chr(92), '/')}" if report.get('annotated_file') else None
@@ -289,6 +288,46 @@ def admin_stats():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+@app.route('/admin/report/<report_id>/update', methods=['POST'])
+def update_report(report_id):
+    """Update report admin fields (status, progress, notes)."""
+    try:
+        data = request.get_json()
+        reports_path = os.path.join(os.path.dirname(__file__), 'reports.json')
+        if not os.path.exists(reports_path):
+            return jsonify({'success': False, 'error': 'No reports'}), 404
+
+        with open(reports_path, 'r', encoding='utf-8') as rf:
+            reports = json.load(rf)
+
+        raw_id = report_id.replace('RPT-', '') if report_id.startswith('RPT-') else report_id
+
+        found = False
+        for r in reports:
+            rid = str(r.get('id', ''))
+            # match either raw id or zero-padded version
+            if rid == raw_id or rid.zfill(4) == raw_id:
+                if 'status' in data:
+                    r['admin_status'] = data['status']
+                if 'progress' in data:
+                    r['admin_progress'] = data['progress']
+                if 'notes' in data:
+                    r['admin_notes'] = data['notes']
+                found = True
+                break
+
+        if not found:
+            return jsonify({'success': False, 'error': 'Report not found'}), 404
+
+        with open(reports_path, 'w', encoding='utf-8') as wf:
+            json.dump(reports, wf, indent=2)
+
+        return jsonify({'success': True})
+    except Exception as e:
+        print(f'Update error: {e}')
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 @app.route('/admin/report/<report_id>/artifacts', methods=['GET'])
 def report_artifacts(report_id):
     """Return file paths for a specific report's evidence (original, annotated, thumbs)."""
@@ -300,7 +339,6 @@ def report_artifacts(report_id):
         with open(reports_path, 'r', encoding='utf-8') as rf:
             reports = json.load(rf)
 
-        # The frontend sends ids like "RPT-<raw_id>", strip the prefix
         raw_id = report_id.replace('RPT-', '') if report_id.startswith('RPT-') else report_id
 
         found = None
@@ -316,12 +354,17 @@ def report_artifacts(report_id):
         orig = found.get('original_file', '')
         annot = found.get('annotated_file', '')
 
-        # Build artifacts response
+        # Check if files still exist on disk (ephemeral storage may wipe them)
+        orig_exists = orig and os.path.exists(os.path.join(base_dir, orig))
+        annot_exists = annot and os.path.exists(os.path.join(base_dir, annot))
+
+        # Build artifacts response with base64 fallback
         data = {
-            'original': f"/{orig.replace(chr(92), '/')}" if orig and os.path.exists(os.path.join(base_dir, orig)) else None,
-            'annotated': f"/{annot.replace(chr(92), '/')}" if annot and os.path.exists(os.path.join(base_dir, annot)) else None,
+            'original': f"/{orig.replace(chr(92), '/')}" if orig_exists else None,
+            'annotated': f"/{annot.replace(chr(92), '/')}" if annot_exists else found.get('annotated_base64'),
             'thumbs': [],
-            'log': None,
+            'log': found.get('detections'),
+            'type': 'Video' if orig.lower().endswith(('.mp4', '.avi', '.mov', '.mkv')) else 'Image',
         }
 
         return jsonify({'success': True, 'data': data})
@@ -429,8 +472,8 @@ def admin_auth():
 def serve_report_file(filepath):
     """Serve report files (images/videos)"""
     try:
-        base_dir = os.path.dirname(__file__)
-        return send_from_directory(base_dir, filepath)
+        reports_dir = os.path.join(os.path.dirname(__file__), 'reports')
+        return send_from_directory(reports_dir, filepath)
     except Exception as e:
         print(f'File serve error: {e}')
         return jsonify({'error': 'File not found'}), 404

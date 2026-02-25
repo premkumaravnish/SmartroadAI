@@ -510,6 +510,7 @@ function ReportsPage({ reports }) {
   const [evidenceOpen, setEvidenceOpen]   = useState(false);
   const [artifacts, setArtifacts]         = useState(null);
   const [artifactLog, setArtifactLog]     = useState(null);
+  const [saveMsg, setSaveMsg]             = useState('');
   const backendUrl = (process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000').replace(/\/+$/, '');
   const PER_PAGE = 5;
 
@@ -543,7 +544,30 @@ function ReportsPage({ reports }) {
     const a = document.createElement("a"); a.href=url; a.download="smartroad_reports.csv"; a.click();
   };
 
-  const openReport = (r) => { setSelectedReport(r); setEditStatus(r.status); setEditProgress(r.progress); setNotes(""); };
+  const openReport = (r) => { setSelectedReport(r); setEditStatus(r.status); setEditProgress(r.progress); setNotes(r.notes || ""); };
+
+  const handleSave = async () => {
+    try {
+      setSaveMsg('Saving...');
+      const res = await fetch(`${backendUrl}/admin/report/${selectedReport.id}/update`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: editStatus, progress: editProgress, notes })
+      });
+      const data = await res.json();
+      if (data?.success) {
+        setSelectedReport(prev => ({ ...prev, status: editStatus, progress: editProgress, notes }));
+        setSaveMsg('\u2713 Saved successfully');
+        setTimeout(() => setSaveMsg(''), 3000);
+      } else {
+        setSaveMsg('Save failed');
+        setTimeout(() => setSaveMsg(''), 3000);
+      }
+    } catch (e) {
+      setSaveMsg('Save failed');
+      setTimeout(() => setSaveMsg(''), 3000);
+    }
+  };
 
   const fetchArtifacts = async (id) => {
     try {
@@ -552,15 +576,9 @@ function ReportsPage({ reports }) {
       const data = await res.json();
       if (data?.success) {
         setArtifacts(data.data || null);
-        // fetch log content if present
+        // log data comes directly in the response now (detection list)
         if (data.data?.log) {
-          try {
-            const logRes = await fetch(`${backendUrl}${data.data.log}`);
-            if (logRes.ok) {
-              const txt = await logRes.text();
-              try { setArtifactLog(JSON.parse(txt)); } catch(e) { setArtifactLog(txt); }
-            }
-          } catch(e) { setArtifactLog(null); }
+          setArtifactLog(data.data.log);
         } else {
           setArtifactLog(null);
         }
@@ -672,12 +690,13 @@ function ReportsPage({ reports }) {
                   boxSizing:"border-box",
                 }}/>
               </div>
-              <button style={{
+              <button onClick={handleSave} style={{
                 width:"100%", padding:"9px", borderRadius:8, cursor:"pointer",
                 background:"linear-gradient(90deg,#1d4ed8,#0ea5e9)",
                 border:"none", color:"#fff", fontFamily:"'Exo 2',sans-serif", fontWeight:600, fontSize:13,
                 letterSpacing:"0.05em",
               }}>SAVE CHANGES</button>
+              {saveMsg && <div style={{ marginTop:8, textAlign:'center', fontSize:12, fontFamily:"'Exo 2',sans-serif", color: saveMsg.includes('Saved') ? '#4ade80' : saveMsg === 'Saving...' ? '#60a5fa' : '#f87171' }}>{saveMsg}</div>}
             </GlassCard>
           </div>
         </div>
@@ -698,17 +717,31 @@ function ReportsPage({ reports }) {
                 <div style={{ flex:1 }}>
                   <div style={{ fontSize:12, color:'#94a3b8', marginBottom:6 }}>Original</div>
                   {artifacts?.original ? (
-                    <video controls style={{ width:'100%', borderRadius:8, background:'#000' }} src={`${backendUrl}${artifacts.original}`} />
+                    selectedReport.type === 'Video' ? (
+                      <video controls style={{ width:'100%', borderRadius:8, background:'#000' }} src={`${backendUrl}${artifacts.original}`} />
+                    ) : (
+                      <img style={{ width:'100%', borderRadius:8, background:'#000' }} src={artifacts.original.startsWith('data:') ? artifacts.original : `${backendUrl}${artifacts.original}`} alt="original" />
+                    )
+                  ) : selectedReport.image_path ? (
+                    <img style={{ width:'100%', borderRadius:8, background:'#000' }} src={selectedReport.image_path.startsWith('data:') ? selectedReport.image_path : `${backendUrl}${selectedReport.image_path}`} alt="original" />
                   ) : (
-                    <div style={{ padding:12, color:'#94a3b8' }}>Original video not available</div>
+                    <div style={{ padding:12, color:'#94a3b8' }}>Original not available</div>
                   )}
                 </div>
                 <div style={{ flex:1 }}>
-                  <div style={{ fontSize:12, color:'#94a3b8', marginBottom:6 }}>Annotated</div>
+                  <div style={{ fontSize:12, color:'#94a3b8', marginBottom:6 }}>Annotated (Detections)</div>
                   {artifacts?.annotated ? (
-                    <video controls style={{ width:'100%', borderRadius:8, background:'#000' }} src={`${backendUrl}${artifacts.annotated}`} />
+                    artifacts.annotated.startsWith('data:') ? (
+                      <img style={{ width:'100%', borderRadius:8, background:'#000' }} src={artifacts.annotated} alt="annotated" />
+                    ) : selectedReport.type === 'Video' ? (
+                      <video controls style={{ width:'100%', borderRadius:8, background:'#000' }} src={`${backendUrl}${artifacts.annotated}`} />
+                    ) : (
+                      <img style={{ width:'100%', borderRadius:8, background:'#000' }} src={`${backendUrl}${artifacts.annotated}`} alt="annotated" />
+                    )
+                  ) : selectedReport.image_with_detections ? (
+                    <img style={{ width:'100%', borderRadius:8, background:'#000' }} src={selectedReport.image_with_detections.startsWith('data:') ? selectedReport.image_with_detections : `${backendUrl}${selectedReport.image_with_detections}`} alt="annotated" />
                   ) : (
-                    <div style={{ padding:12, color:'#94a3b8' }}>Annotated video not available</div>
+                    <div style={{ padding:12, color:'#94a3b8' }}>Annotated image not available</div>
                   )}
                 </div>
               </div>
